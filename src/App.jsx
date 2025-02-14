@@ -34,13 +34,21 @@ export default function App() {
 
  
   return (
-    <>
-    <Mode/>
-
-    <TimeStarter clickHandeler={clickHandeler} isRun = {isRun} totalSeconds={totalSeconds} />
-
-    < Qoutes quotes={quotes} setQoutes={setQoutes} />
-    </>
+   
+     <>
+     <main className='grid grid-cols-2 grid-rows-2 gap-4 place-items-center'>
+        <Mode />
+     
+    
+    
+      
+          <TimeStarter clickHandeler={clickHandeler} isRun={isRun} totalSeconds={totalSeconds} />
+       
+          <Qoutes quotes={quotes} setQoutes={setQoutes} />
+        
+          </main>
+      </>
+  
   );
 }
 
@@ -50,19 +58,25 @@ export default function App() {
   const seconds = totalSeconds % 60;
 
   return(
-    <section className='flex flex-col justify-center items-center w-screen h-150'>
-    <section className='flex flex-col justify-center items-center gap-4 shadow-lg w-1/2 h-1/2 bg-gray-800 text-white p-6 rounded-lg'>
-      <div className="flex flex-col justify-center items-center">
-        <div className='bg-gray-900 w-48 h-48 rounded-full flex flex-col justify-center items-center p-4'>
-          <p className='text-5xl font-extrabold font-mono tracking-wide'>{minutes}:{String(seconds).padStart(2, '0')}</p>
-        </div>
+    <section className='flex flex-col justify-center items-center  bg-gray-100'>
+  <section className='flex flex-col justify-center items-center gap-6 shadow-lg w-full max-w-md bg-gray-800 text-white p-8 rounded-lg'>
+    <div className="flex flex-col justify-center items-center">
+      <div className='bg-gray-900  rounded-full flex flex-col justify-center items-center p-4'>
+        <p className='text-5xl font-extrabold font-mono tracking-wide'>
+          {minutes}:{String(seconds).padStart(2, '0')}
+        </p>
       </div>
-      <div className="flex justify-center items-center gap-4">
-        {isRun ? <Pause onClick={clickHandeler} size={32} className="cursor-pointer hover:scale-110 transition-transform" /> 
-        : <Play onClick={clickHandeler} size={32} className="cursor-pointer hover:scale-110 transition-transform" />}
-      </div>
-    </section>
+    </div>
+    <div className="flex justify-center items-center gap-6">
+      {isRun ? (
+        <Pause onClick={clickHandeler} size={32} className="cursor-pointer hover:scale-110 transition-transform" />
+      ) : (
+        <Play onClick={clickHandeler} size={32} className="cursor-pointer hover:scale-110 transition-transform" />
+      )}
+    </div>
   </section>
+</section>
+
   
   );
 
@@ -92,7 +106,7 @@ function Qoutes({quotes,setQoutes}){
 
     return(
 
-      <div className="flex flex-col items-center gap-4 p-6 bg-gray-100 rounded-lg shadow-md w-96 mx-auto">
+      <div className="flex flex-col items-center gap-4 p-6 bg-gray-100 rounded-lg shadow-md ">
       <input 
         type="text" 
         onChange={onChangeHandler} 
@@ -108,13 +122,12 @@ function Qoutes({quotes,setQoutes}){
       </button>
     
       <div className="w-full text-center text-gray-700 font-medium">
-        <ul>
-        {quoteRender}
+        <ul className="space-y-3">
+          {quoteRender}
         </ul>
       </div>
     </div>
     
-
    
     );
 
@@ -140,19 +153,35 @@ function onChangeHandler(e){
 }
 
 return (
-<div>
+<div className="col-span-2 flex flex-col items-center justify-center space-y-4 p-4">
   {onEdit ? (
     <>
-      <input type="text" placeholder="Enter The Mode..." onChange={onChangeHandler} />
-      <button onClick={editHandler}>SET</button>
+      <input
+        type="text"
+        placeholder="Enter The Mode..."
+        onChange={onChangeHandler}
+        className="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <button
+        onClick={editHandler}
+        className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition"
+      >
+        SET
+      </button>
     </>
   ) : (
     <>
-      <p>{mode}</p>
-      <button onClick={editHandler}>Edit</button>
+      <p className="text-4xl font-extrabold text-gray-900">{mode}</p>
+      <button
+        onClick={editHandler}
+        className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition"
+      >
+        Edit
+      </button>
     </>
   )}
 </div>
+
 
 )
 

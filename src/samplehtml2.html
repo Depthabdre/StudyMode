@@ -2,92 +2,242 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Circular Button Layout</title>
+    <title>Clock Ticks Demo</title>
+    <!-- Tailwind via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="bg-gray-800 flex items-center justify-center min-h-screen">
-    <!-- Container for the circular layout -->
-    <div class="relative w-64 h-64">
-      <!-- Optional: a parent circle background -->
-      <div class="absolute inset-0 bg-gray-900 rounded-full"></div>
+  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <!-- Outer clock face: 256px x 256px (16rem x 16rem), circular, with a light border -->
+    <div class="relative w-64 h-64 rounded-full border border-gray-300">
+      <!-- 24 ticks around the circle -->
+      <!-- Each tick is absolutely positioned at the center, 
+         then rotated by multiples of 15° (0,15,30,...,345), and 
+         translated outward 100px. Adjust 100px if you want a bigger or smaller radius. -->
 
-      <!-- 24 buttons evenly spaced in a circle -->
-      <!-- Each button is placed at the center (top-1/2 left-1/2) then:
-           • shifted upward by -translate-y-28 (this is your circle’s radius)
-           • rotated by an increasing angle so that they “fan” around the center -->
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[0deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[15deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[30deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[45deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[60deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[75deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[90deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[105deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[120deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[135deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[150deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[165deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[180deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[195deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[210deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[225deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[240deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[255deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[270deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[285deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[300deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[315deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[330deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
-      <button
-        class="absolute top-1/2 left-1/2 transform -translate-y-28 rotate-[345deg] bg-gray-300 w-6 h-2 rounded-2xl"
-      ></button>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(0deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(15deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(30deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(45deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(60deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(75deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(90deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(105deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(120deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(135deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(150deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(165deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(180deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(195deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(210deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(225deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(240deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(255deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(270deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(285deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(300deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(315deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(330deg) translateX(100px);
+        "
+      ></div>
+      <div
+        class="absolute bg-gray-500 w-6 h-2 rounded-full"
+        style="
+          top: 50%;
+          left: 50%;
+          transform-origin: left center;
+          transform: rotate(345deg) translateX(100px);
+        "
+      ></div>
+    </div>
+
+    <div class="w-16 h-16 bg-amber-700 relative m-14">
+      <p class="absolute bg-gray-500 w-6 h-2 rounded-full" style="
+      top: 50%;
+      left: 60%;
+      ;
+    "></p>
     </div>
   </body>
 </html>
