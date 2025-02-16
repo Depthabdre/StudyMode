@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Play, Pause } from "lucide-react";
+import { ArrowUp, ArrowDown } from "lucide-react";
 
 
 export default function App() {
@@ -32,7 +33,8 @@ export default function App() {
   return (
     <main className="grid grid-cols-2 grid-rows-4 gap-4 w-[90vw] h-screen items-start justify-center  m-0 p-0">
       <Mode  />
-      <TimeStarter clickHandler={clickHandler} isRun={isRun} totalSeconds={totalSeconds} />
+      {isRun ? <TimeStarter clickHandler={clickHandler} isRun={isRun} totalSeconds={totalSeconds} /> : <FocusSession/>}
+      
       <Quotes quotes={quotes} setQuotes={setQuotes} /> {/* Fixed prop name here */}
     </main>
   );
@@ -185,7 +187,9 @@ function CircularTicker({ children , activeColors }){
 
   return (
     <>
-  <div className="relative w-64  border-gray-300 flex flex-col items-center justify-center">
+  <div className="relative w-64  border-gray-300 flex flex-col items-center justify-center rounded-full">
+
+ 
      
 
       <div
@@ -194,7 +198,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(0deg) translateX(100px)"}}
+          transform: "rotate(0deg) translateX(80px)"}}
         
       ></div>
       <div
@@ -203,7 +207,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(15deg) translateX(100px)"}}
+          transform: "rotate(15deg) translateX(80px)"}}
       ></div>
       <div
         className={`absolute ${activeColors[2] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
@@ -211,7 +215,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(30deg) translateX(100px)"}}
+          transform: "rotate(30deg) translateX(80px)"}}
       ></div>
       <div
         className={`absolute ${activeColors[3] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
@@ -219,7 +223,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(45deg) translateX(100px)"}}
+          transform: "rotate(45deg) translateX(80px)"}}
       ></div>
       <div
         className={`absolute ${activeColors[4] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
@@ -227,7 +231,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(60deg) translateX(100px)"}}
+          transform: "rotate(60deg) translateX(80px)"}}
       ></div>
       <div
         className={`absolute ${activeColors[5] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
@@ -235,7 +239,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(75deg) translateX(100px)"}}
+          transform: "rotate(75deg) translateX(80px)"}}
       ></div>
       <div
         className={`absolute ${activeColors[6] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
@@ -243,7 +247,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(90deg) translateX(100px)"}}
+          transform: "rotate(90deg) translateX(80px)"}}
       ></div>
        <div
         className={`absolute ${activeColors[7] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
@@ -251,7 +255,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(105deg) translateX(100px)"
+          transform: "rotate(105deg) translateX(80px)"
         }}
       ></div>
       <div
@@ -260,7 +264,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(120deg) translateX(100px)"
+          transform: "rotate(120deg) translateX(80px)"
         }}
       ></div>
       <div
@@ -269,7 +273,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(135deg) translateX(100px)"
+          transform: "rotate(135deg) translateX(80px)"
         }}
       ></div>
       <div
@@ -278,7 +282,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(150deg) translateX(100px)"
+          transform: "rotate(150deg) translateX(80px)"
         }}
       ></div>
       <div
@@ -287,7 +291,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(165deg) translateX(100px)"
+          transform: "rotate(165deg) translateX(80px)"
         }}
       ></div>
       <div
@@ -296,7 +300,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(180deg) translateX(100px)"
+          transform: "rotate(180deg) translateX(80px)"
         }}
       ></div>
       <div
@@ -305,7 +309,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(195deg) translateX(100px)"
+          transform: "rotate(195deg) translateX(80px)"
         }}
       ></div>
       <div
@@ -314,7 +318,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(210deg) translateX(100px)"
+          transform: "rotate(210deg) translateX(80px)"
         }}
       ></div>
       <div
@@ -323,7 +327,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(225deg) translateX(100px)"
+          transform: "rotate(225deg) translateX(80px)"
         }}
       ></div>
       <div
@@ -332,7 +336,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(240deg) translateX(100px)"
+          transform: "rotate(240deg) translateX(80px)"
         }}
       ></div>
       <div
@@ -341,7 +345,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(255deg) translateX(100px)"
+          transform: "rotate(255deg) translateX(80px)"
         }}
       ></div>
       <div
@@ -350,7 +354,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(270deg) translateX(100px)"
+          transform: "rotate(270deg) translateX(80px)"
         }}
       ></div>
       <div
@@ -359,7 +363,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(285deg) translateX(100px)"
+          transform: "rotate(285deg) translateX(80px)"
         }}
       ></div>
       <div
@@ -368,7 +372,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(300deg) translateX(100px)"
+          transform: "rotate(300deg) translateX(80px)"
         }}
       ></div>
       <div
@@ -377,7 +381,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(315deg) translateX(100px)"
+          transform: "rotate(315deg) translateX(80px)"
         }}
       ></div>
       <div
@@ -386,7 +390,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(330deg) translateX(100px)"
+          transform: "rotate(330deg) translateX(80px)"
         }}
       ></div>
       <div
@@ -395,7 +399,7 @@ function CircularTicker({ children , activeColors }){
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(345deg) translateX(100px)"
+          transform: "rotate(345deg) translateX(80px)"
         }}
       ></div>
 
@@ -405,6 +409,50 @@ function CircularTicker({ children , activeColors }){
     </>
   );
 }
+
+
+function FocusSession(){
+
+  const breaks = 0;
+
+return (
+<section className='flex flex-col justify-start items-center  shadow-lg bg-gray-800 text-white p-8 rounded-lg h-full  row-span-2  gap-4'>
+<div>
+  <h1 className="font-extrabold from-stone-50">Get Ready to Focus</h1>
+</div>
+<div className="grid grid-rows-2 grid-cols-3  bg-gray-700 rounded-[7px] w-2/3 h-1/4  ">
+  <div className="row-span-2 col-span-2 flex flex-col justify-between items-center border-l-neutral-300 border-r-2 pr-2">
+
+    <p className="font-bold text-3xl">30</p>
+    <span className="text-sm">mins</span>
+
+  </div>
+  <div className=" text-gray-800 text-3xl border-b-2 border-amber-100 pl-2">
+      <ArrowUp className="cursor-pointer hover:text-blue-500 transition-transform hover:scale-110 " />
+     
+     
+  </div>
+  <div className=" text-gray-800 text-3xl  border-amber-100 pl-2">
+  <ArrowDown className="cursor-pointer hover:text-gray-950 transition-transform hover:scale-110" />
+  </div>
+  
+</div>
+
+<div>
+  <p className="text-emerald-50 font-semibold ">you'll have {breaks} breaks </p>
+</div>
+
+<div className="bg-blue-700 rounded-md p-2 text-blue-50 font-bold hover:scale-110 transition-transform duration-500 ease-linear">
+  <button className="inline-flex gap-2" >  
+    <Play className="cursor-pointer  hover:scale-110 transition-transform" />
+    Start Focus Session</button>
+</div>
+
+</section>
+);
+
+}
+
 
 
 
