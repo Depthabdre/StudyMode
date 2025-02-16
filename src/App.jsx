@@ -1,121 +1,88 @@
-import { useState, useEffect,useRef } from 'react';
+import { useState, useEffect, useRef } from "react";
 import { Play, Pause } from "lucide-react";
 
+
 export default function App() {
+  const [isRun, setIsRun] = useState(false);
   const [totalSeconds, setTotalSeconds] = useState(0);
-  const [isRun , setIsRun] = useState(false);
-  let intervalId = useRef();
-  const [quotes,setQoutes] = useState([])
+  const [quotes, setQuotes] = useState([]);  // Fixed spelling here
+  const intervalId = useRef(null); // Store interval reference
 
   useEffect(() => {
-
-    if ( isRun ){
-    intervalId.current = setInterval(() => {
-      setTotalSeconds(prevSeconds => prevSeconds + 1);
-    }, 1000);
-  }
-
- 
-    return () => clearInterval(intervalId.current);
-  
-
-    
-  }, [isRun]); // it mounts again if the value of is_run changes
-
-  function clickHandeler(){
-    if (isRun){
-      setIsRun(false);
-    }
-    else{
-      setIsRun(true);
+    if (isRun) {
+      intervalId.current = setInterval(() => {
+        setTotalSeconds(prevSeconds => prevSeconds + 1);
+      }, 1000);
+    } else {
+      clearInterval(intervalId.current);
     }
 
+    // Cleanup function to avoid memory leaks
+    return () => {
+      if (intervalId.current) {
+        clearInterval(intervalId.current);
+      }
+    };
+  }, [isRun]);
+
+  function clickHandler() {
+    setIsRun(prev => !prev);
   }
 
- 
   return (
-   
-     <>
-     <main className='grid grid-cols-2 grid-rows-2 gap-4 place-items-center'>
-        <Mode />
-     
-    
-    
-      
-          <TimeStarter clickHandeler={clickHandeler} isRun={isRun} totalSeconds={totalSeconds} />
-       
-          <Qoutes quotes={quotes} setQoutes={setQoutes} />
-        
-          </main>
-      </>
-  
+    <main className="grid grid-cols-2 grid-rows-2 gap-4 w-[90vw] h-screen items-start justify-center  m-0 p-0">
+      <Mode  />
+      <TimeStarter clickHandler={clickHandler} isRun={isRun} totalSeconds={totalSeconds} />
+      <Quotes quotes={quotes} setQuotes={setQuotes} /> {/* Fixed prop name here */}
+    </main>
   );
 }
 
- function TimeStarter({clickHandeler,isRun,totalSeconds}){
 
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
 
-  return(
-    <section className='flex flex-col justify-center items-center  bg-gray-100'>
-  <section className='flex flex-col justify-center items-center gap-6 shadow-lg w-full max-w-md bg-gray-800 text-white p-8 rounded-lg'>
-    <div className="flex flex-col justify-center items-center">
-      <div className='bg-gray-900  rounded-full flex flex-col justify-center items-center p-4'>
-        <p className='text-5xl font-extrabold font-mono tracking-wide'>
-          {minutes}:{String(seconds).padStart(2, '0')}
-        </p>
-      </div>
-    </div>
-    <div className="flex justify-center items-center gap-6">
-      {isRun ? (
-        <Pause onClick={clickHandeler} size={32} className="cursor-pointer hover:scale-110 transition-transform" />
-      ) : (
-        <Play onClick={clickHandeler} size={32} className="cursor-pointer hover:scale-110 transition-transform" />
-      )}
-    </div>
-  </section>
-</section>
 
-  
-  );
 
- }
 
      
 
-function Qoutes({quotes,setQoutes}){
-    const [newQoute,setNewQoute] = useState("")
+function Quotes({ quotes, setQuotes }) {
+  const [newQuote, setNewQuote] = useState(""); // Fixed spelling
 
-    function newQouteHandler(){
-    setQoutes([...quotes, newQoute])
+  // Handler to add a new quote
+  function newQuoteHandler() {
+    if (newQuote.trim()) { // Check for non-empty input
+      setQuotes(prevQuotes => [...prevQuotes, newQuote]); // Use the functional form to get the latest quotes
+      setNewQuote(""); // Clear the input field after adding the quote
     }
-    function onChangeHandler(e){
-    setNewQoute(e.target.value)
-    }
+  }
 
-    const quoteRender = quotes.map((quote, index) => (
-      <li 
-        key={index} 
-        className="bg-gradient-to-r from-blue-100 to-emerald-50 text-black px-4 py-3 rounded-lg shadow-md font-semibold text-lg italic transition-transform transform hover:scale-105"
-      >
-        {quote}
-      </li>
-    ));
-    
+  // Handler to update the input field value
+  function onChangeHandler(e) {
+    setNewQuote(e.target.value);
+  }
 
-    return(
+  // Render the list of quotes
+  const quoteRender = quotes.map((quote, index) => (
+    <li 
+      key={index} 
+      className="bg-gradient-to-r from-blue-100 to-emerald-50 text-black px-4 py-3 rounded-lg shadow-md font-semibold text-lg italic transition-transform transform hover:scale-105"
+    >
+      {quote}
+    </li>
+  ));
 
-      <div className="flex flex-col items-center gap-4 p-6 bg-gray-100 rounded-lg shadow-md ">
+  return (
+    <div className="flex flex-col items-center gap-4 p-6 bg-gray-100 rounded-lg shadow-md h-full">
       <input 
         type="text" 
+        value={newQuote} // Set value to the state to make it a controlled input
         onChange={onChangeHandler} 
         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         placeholder="Enter your quote..."
       />
       
       <button 
-        onClick={newQouteHandler} 
+        onClick={newQuoteHandler} 
         className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-all"
       >
         Add Quote
@@ -127,66 +94,316 @@ function Qoutes({quotes,setQoutes}){
         </ul>
       </div>
     </div>
-    
-   
-    );
-
+  );
 }
 
 
+function Mode() {
+  const [onEdit, setOnEdit] = useState(true);
+  const [mode, setMode] = useState("");
 
-function Mode(){
-const [onEdit , setOnEdit] = useState(true)
-const [mode , setMode] = useState("")
+  function editHandler() {
+    setOnEdit(prev => !prev);
+  }
 
-function editHandler(){
-if(onEdit){
-setOnEdit(false)
-}
-else{
-setOnEdit(true)
-}
+  function onChangeHandler(e) {
+    setMode(e.target.value);
+  }
+
+  return (
+    <div className="col-span-2 flex flex-col items-center justify-center gap-2 p-4">
+      {onEdit ? (
+        <>
+          <input
+            type="text"
+            placeholder="Enter The Mode..."
+            value={mode}  // Ensures input retains value
+            onChange={onChangeHandler}
+            className="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            onClick={editHandler}
+            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition"
+          >
+            SET
+          </button>
+        </>
+      ) : (
+        <>
+          <p className="text-4xl font-extrabold text-gray-900">{mode || "No Mode Set"}</p>
+          <button
+            onClick={editHandler}
+            className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition"
+          >
+            Edit
+          </button>
+        </>
+      )}
+    </div>
+  );
 }
 
-function onChangeHandler(e){
-  setMode(e.target.value)
+
+function TimeStarter({ clickHandler, isRun, totalSeconds }) {
+  const [activeColors, setActiveColors] = useState(Array(24).fill(false));
+
+  useEffect(() => {
+    if (totalSeconds % 10 === 0) {
+      let index = Math.floor(totalSeconds / 10) - 1;
+
+      setActiveColors((prevActiveColors) =>
+        prevActiveColors.map((color, i) => (i === index ? true : color))
+      );
+    }
+  }, [totalSeconds]);
+
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  return (
+    <section className='flex flex-col justify-between items-center   shadow-lg bg-gray-800 text-white p-8 rounded-lg h-full '>
+      <div className="flex flex-col justify-center items-center pt-18">
+        <CircularTicker activeColors={activeColors}>
+          <p className="text-5xl font-extrabold font-mono tracking-wide ">
+            {minutes}:{String(seconds).padStart(2, '0')}
+          </p>
+        </CircularTicker>
+      </div>
+
+      <div className="flex justify-center items-center ">
+        {isRun ? (
+          <Pause onClick={clickHandler} size={32} className="cursor-pointer hover:scale-110 transition-transform" />
+        ) : (
+          <Play onClick={clickHandler} size={32} className="cursor-pointer hover:scale-110 transition-transform" />
+        )}
+      </div>
+    </section>
+  );
 }
 
-return (
-<div className="col-span-2 flex flex-col items-center justify-center space-y-4 p-4">
-  {onEdit ? (
+function CircularTicker({ children , activeColors }){
+
+  return (
     <>
-      <input
-        type="text"
-        placeholder="Enter The Mode..."
-        onChange={onChangeHandler}
-        className="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <button
-        onClick={editHandler}
-        className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition"
-      >
-        SET
-      </button>
+  <div className="relative w-64  border-gray-300 flex flex-col items-center justify-center">
+     
+
+      <div
+        className={`absolute ${activeColors[0] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(0deg) translateX(100px)"}}
+        
+      ></div>
+      <div
+        className={`absolute ${activeColors[1] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(15deg) translateX(100px)"}}
+      ></div>
+      <div
+        className={`absolute ${activeColors[2] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(30deg) translateX(100px)"}}
+      ></div>
+      <div
+        className={`absolute ${activeColors[3] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(45deg) translateX(100px)"}}
+      ></div>
+      <div
+        className={`absolute ${activeColors[4] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(60deg) translateX(100px)"}}
+      ></div>
+      <div
+        className={`absolute ${activeColors[5] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(75deg) translateX(100px)"}}
+      ></div>
+      <div
+        className={`absolute ${activeColors[6] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(90deg) translateX(100px)"}}
+      ></div>
+       <div
+        className={`absolute ${activeColors[7] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(105deg) translateX(100px)"
+        }}
+      ></div>
+      <div
+        className={`absolute ${activeColors[8] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(120deg) translateX(100px)"
+        }}
+      ></div>
+      <div
+        className={`absolute ${activeColors[9] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(135deg) translateX(100px)"
+        }}
+      ></div>
+      <div
+        className={`absolute ${activeColors[10] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(150deg) translateX(100px)"
+        }}
+      ></div>
+      <div
+        className={`absolute ${activeColors[11] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(165deg) translateX(100px)"
+        }}
+      ></div>
+      <div
+        className={`absolute ${activeColors[12] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(180deg) translateX(100px)"
+        }}
+      ></div>
+      <div
+        className={`absolute ${activeColors[13] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(195deg) translateX(100px)"
+        }}
+      ></div>
+      <div
+        className={`absolute ${activeColors[14] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(210deg) translateX(100px)"
+        }}
+      ></div>
+      <div
+        className={`absolute ${activeColors[15] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(225deg) translateX(100px)"
+        }}
+      ></div>
+      <div
+        className={`absolute ${activeColors[16] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(240deg) translateX(100px)"
+        }}
+      ></div>
+      <div
+        className={`absolute ${activeColors[17] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(255deg) translateX(100px)"
+        }}
+      ></div>
+      <div
+        className={`absolute ${activeColors[18] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(270deg) translateX(100px)"
+        }}
+      ></div>
+      <div
+        className={`absolute ${activeColors[19] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(285deg) translateX(100px)"
+        }}
+      ></div>
+      <div
+        className={`absolute ${activeColors[20] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(300deg) translateX(100px)"
+        }}
+      ></div>
+      <div
+        className={`absolute ${activeColors[21] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(315deg) translateX(100px)"
+        }}
+      ></div>
+      <div
+        className={`absolute ${activeColors[22] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(330deg) translateX(100px)"
+        }}
+      ></div>
+      <div
+        className={`absolute ${activeColors[23] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        style={{
+          top: "50%",
+          left: "50%",
+          transformOrigin: "left center",
+          transform: "rotate(345deg) translateX(100px)"
+        }}
+      ></div>
+
+      { children }
+
+    </div>
     </>
-  ) : (
-    <>
-      <p className="text-4xl font-extrabold text-gray-900">{mode}</p>
-      <button
-        onClick={editHandler}
-        className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition"
-      >
-        Edit
-      </button>
-    </>
-  )}
-</div>
-
-
-)
-
-
-
+  );
 }
 
 
