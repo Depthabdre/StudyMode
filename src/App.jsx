@@ -30,7 +30,7 @@ export default function App() {
   }
 
   return (
-    <main className="grid grid-cols-2 grid-rows-2 gap-4 w-[90vw] h-screen items-start justify-center  m-0 p-0">
+    <main className="grid grid-cols-2 grid-rows-4 gap-4 w-[90vw] h-screen items-start justify-center  m-0 p-0">
       <Mode  />
       <TimeStarter clickHandler={clickHandler} isRun={isRun} totalSeconds={totalSeconds} />
       <Quotes quotes={quotes} setQuotes={setQuotes} /> {/* Fixed prop name here */}
@@ -72,7 +72,7 @@ function Quotes({ quotes, setQuotes }) {
   ));
 
   return (
-    <div className="flex flex-col items-center gap-4 p-6 bg-gray-100 rounded-lg shadow-md h-full">
+    <div className="flex flex-col items-center gap-4 p-6 bg-gray-100 rounded-lg shadow-md h-full row-span-2">
       <input 
         type="text" 
         value={newQuote} // Set value to the state to make it a controlled input
@@ -161,8 +161,8 @@ function TimeStarter({ clickHandler, isRun, totalSeconds }) {
   const seconds = totalSeconds % 60;
 
   return (
-    <section className='flex flex-col justify-between items-center   shadow-lg bg-gray-800 text-white p-8 rounded-lg h-full '>
-      <div className="flex flex-col justify-center items-center pt-18">
+    <section className='grid grid-rows-10 grid-cols-1 justify-center items-start  shadow-lg bg-gray-800 text-white p-8 rounded-lg h-full row-span-2 '>
+      <div className="row-span-9 flex flex-col justify-center items-center pt-18">
         <CircularTicker activeColors={activeColors}>
           <p className="text-5xl font-extrabold font-mono tracking-wide ">
             {minutes}:{String(seconds).padStart(2, '0')}
