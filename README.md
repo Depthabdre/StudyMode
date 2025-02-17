@@ -1,8 +1,10 @@
-# React + Vite
+Study Mode Tracker - React + Vite
+This project is a web application designed to help users imitate their studying modes by incorporating focus sessions, motivational quotes, progress tracking, and documentation on improving concentration.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Features
+Focus Session Timer: Set a timer for deep focus sessions and take breaks efficiently.
+Motivational Quotes: Get inspiring quotes during breaks to stay motivated.
+Study Modes: Different modes that suggest activities based on your current focus session.
+Progress Tracking: Monitor your study habits and track improvements over time.
+Guides on Focus & Productivity: Learn effective techniques to enhance focus and manage distractions.
+Tech Stack
