@@ -8,6 +8,7 @@ export default function App() {
   const [totalSeconds, setTotalSeconds] = useState(0);
   const [quotes, setQuotes] = useState([]);  // Fixed spelling here
   const intervalId = useRef(null); // Store interval reference
+  const TotalSessionMinute = useRef(0)
 
   useEffect(() => {
     if (isRun) {
@@ -33,7 +34,7 @@ export default function App() {
   return (
     <main className="grid grid-cols-2 grid-rows-4 gap-4 w-[90vw] h-screen items-start justify-center  m-0 p-0">
       <Mode  />
-      {isRun ? <TimeStarter clickHandler={clickHandler} isRun={isRun} totalSeconds={totalSeconds} /> : <FocusSession/>}
+      {isRun ? <TimeStarter clickHandler={clickHandler} isRun={isRun} totalSeconds={totalSeconds} /> : <FocusSession TotalSessionMinute={TotalSessionMinute} setIsRun={setIsRun} />}
       
       <Quotes quotes={quotes} setQuotes={setQuotes} /> {/* Fixed prop name here */}
     </main>
@@ -411,9 +412,32 @@ function CircularTicker({ children , activeColors }){
 }
 
 
-function FocusSession(){
+function FocusSession({TotalSessionMinute,setIsRun}){
+
+  const [totalMinutes,setTotalMinutes] = useState(0)
 
   const breaks = 0;
+
+  function FocusSessionStarter(){
+    TotalSessionMinute.current = totalMinutes;
+    setIsRun(true);
+  }
+
+  function decHandler(){
+    if (totalMinutes >= 5)
+      setTotalMinutes( totalMinutes - 5)
+
+  }
+  function incHandler(){
+    setTotalMinutes( totalMinutes + 5)
+
+  }
+  function onChangeHandler(e){
+    let totminutes = parseInt(e.target.value);
+    setTotalMinutes(totminutes);
+
+
+  }
 
 return (
 <section className='flex flex-col justify-start items-center  shadow-lg bg-gray-800 text-white p-8 rounded-lg h-full  row-span-2  gap-4'>
@@ -423,17 +447,27 @@ return (
 <div className="grid grid-rows-2 grid-cols-3  bg-gray-700 rounded-[7px] w-2/3 h-1/4  ">
   <div className="row-span-2 col-span-2 flex flex-col justify-between items-center border-l-neutral-300 border-r-2 pr-2">
 
-    <p className="font-bold text-3xl">30</p>
+  <input 
+  type="text" 
+  inputMode="numeric" 
+  pattern="[0-9]*" 
+  value = {totalMinutes}
+  onChange={onChangeHandler}
+  onInput={(e) => e.target.value = e.target.value.replace(/\D/g, '')}
+  className="font-bold text-3xl w-2/3 h-3/7 m-auto text-center border border-transparent rounded-md outline-none transition duration-200 
+             focus:border-blue-500 focus:ring-2 focus:ring-blue-300 
+             hover:border-gray-400"
+/>
     <span className="text-sm">mins</span>
 
   </div>
   <div className=" text-gray-800 text-3xl border-b-2 border-amber-100 pl-2">
-      <ArrowUp className="cursor-pointer hover:text-blue-500 transition-transform hover:scale-110 " />
+      <ArrowUp onClick={incHandler} className="cursor-pointer hover:text-blue-500 transition-transform hover:scale-110 " />
      
      
   </div>
   <div className=" text-gray-800 text-3xl  border-amber-100 pl-2">
-  <ArrowDown className="cursor-pointer hover:text-gray-950 transition-transform hover:scale-110" />
+  <ArrowDown onClick={decHandler} className="cursor-pointer hover:text-gray-950 transition-transform hover:scale-110" />
   </div>
   
 </div>
@@ -443,7 +477,7 @@ return (
 </div>
 
 <div className="bg-blue-700 rounded-md p-2 text-blue-50 font-bold hover:scale-110 transition-transform duration-500 ease-linear">
-  <button className="inline-flex gap-2" >  
+  <button className="inline-flex gap-2" onClick={FocusSessionStarter} >  
     <Play className="cursor-pointer  hover:scale-110 transition-transform" />
     Start Focus Session</button>
 </div>
