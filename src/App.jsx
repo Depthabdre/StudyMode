@@ -9,8 +9,13 @@ export default function App() {
   const [quotes, setQuotes] = useState([]);  // Fixed spelling here
   const intervalId = useRef(null); // Store interval reference
   const TotalSessionMinute = useRef(0)
+  const [isBreak,setBreak] = useState(false)
+
+  let minutes = useRef(0);
 
   useEffect(() => {
+    if (!isRun) return;
+
     if (isRun) {
       intervalId.current = setInterval(() => {
         setTotalSeconds(prevSeconds => prevSeconds + 1);
@@ -27,6 +32,35 @@ export default function App() {
     };
   }, [isRun]);
 
+  useEffect(() => {
+    if(!isRun) return;
+    if (TotalSessionMinute.current >= 30 && !isBreak){
+      minutes.current = 30 - Math.floor(totalSeconds/60);
+      if (minutes.current == 0){
+        TotalSessionMinute.current -= 30;
+        setTotalSeconds(0)
+        setBreak(true)
+      }}
+    else if (TotalSessionMinute.current < 30 && !isBreak){
+      minutes.current = TotalSessionMinute.current - (Math.floor(totalSeconds/60))
+      if (minutes.current == 0){
+        setIsRun(false)
+      }
+    }
+    else if (TotalSessionMinute.current >= 5 && !isBreak){
+      minutes.current = 5 - Math.floor(totalSeconds/60);
+      if (minutes.current == 0){
+        TotalSessionMinute.current -= 5;
+        setTotalSeconds(0)
+        setBreak(false) }}
+    else{
+      minutes.current = TotalSessionMinute.current - Math.floor(totalSeconds/60);
+      if (minutes.current == 0){
+        TotalSessionMinute.current = 0;
+        isRun(false);
+        }}
+    },[totalSeconds,isRun,isBreak]);
+
   function clickHandler() {
     setIsRun(prev => !prev);
   }
@@ -34,7 +68,7 @@ export default function App() {
   return (
     <main className="grid grid-cols-2 grid-rows-4 gap-4 w-[90vw] h-screen items-start justify-center  m-0 p-0">
       <Mode  />
-      {isRun ? <TimeStarter clickHandler={clickHandler} isRun={isRun} totalSeconds={totalSeconds} /> : <FocusSession TotalSessionMinute={TotalSessionMinute} setIsRun={setIsRun} />}
+      {isRun ? <TimeStarter clickHandler={clickHandler} isRun={isRun} totalSeconds={totalSeconds}  minutes={ minutes.current} /> : <FocusSession TotalSessionMinute={TotalSessionMinute} setIsRun={setIsRun} />}
       
       <Quotes quotes={quotes} setQuotes={setQuotes} /> {/* Fixed prop name here */}
     </main>
@@ -147,20 +181,19 @@ function Mode() {
 }
 
 
-function TimeStarter({ clickHandler, isRun, totalSeconds }) {
+function TimeStarter({ clickHandler, isRun, totalSeconds , minutes }) {
   const [activeColors, setActiveColors] = useState(Array(24).fill(false));
 
   useEffect(() => {
-    if (totalSeconds % 10 === 0) {
-      let index = Math.floor(totalSeconds / 10) - 1;
+    if (minutes % 2 === 0) {
+      let index = Math.floor(minutes) - 1;
 
       setActiveColors((prevActiveColors) =>
         prevActiveColors.map((color, i) => (i === index ? true : color))
       );
     }
-  }, [totalSeconds]);
+  }, [minutes]);
 
-  const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
 
   return (
@@ -416,7 +449,7 @@ function FocusSession({TotalSessionMinute,setIsRun}){
 
   const [totalMinutes,setTotalMinutes] = useState(0)
 
-  const breaks = 0;
+  const breaks = Math.floor(totalMinutes / 35);
 
   function FocusSessionStarter(){
     TotalSessionMinute.current = totalMinutes;

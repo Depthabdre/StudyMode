@@ -7,4 +7,3 @@ Motivational Quotes: Get inspiring quotes during breaks to stay motivated.
 Study Modes: Different modes that suggest activities based on your current focus session.
 Progress Tracking: Monitor your study habits and track improvements over time.
 Guides on Focus & Productivity: Learn effective techniques to enhance focus and manage distractions.
-Tech Stack
