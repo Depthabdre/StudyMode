@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Play, Pause } from "lucide-react";
-import { ArrowUp, ArrowDown } from "lucide-react";
+import { ArrowUp, ArrowDown ,Square } from "lucide-react";
 
 
 export default function App() {
@@ -165,12 +165,14 @@ function Mode({mode, setMode}) {
             onChange={onChangeHandler}
             className="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+         
           <button
             onClick={editHandler}
             className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition"
           >
             SET
           </button>
+          
         </>
       ) : (
         <>
@@ -213,12 +215,13 @@ function TimeStarter({ totalSeconds , minutes , pauseHandler , isPause }) {
         </CircularTicker>
       </div>
 
-      <div className="flex justify-center items-center pt-3 ">
+      <div className="flex justify-center gap-4 items-center pt-3 ">
         { !isPause ? (
           <Pause onClick={pauseHandler} size={32} className="cursor-pointer hover:scale-110 transition-transform" />
         ) : (
           <Play onClick={pauseHandler} size={32} className="cursor-pointer hover:scale-110 transition-transform" />
         )}
+        <button className="text-red-800 font-bold border-2 rounded-lg w-14 bg-amber-700 hover:scale-105 hover:bg-amber-500 transition">Stop</button>
       </div>
     </section>
   );
