@@ -1,17 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import { Play, Pause } from "lucide-react";
-import { ArrowUp, ArrowDown ,Square } from "lucide-react";
+import { ArrowUp, ArrowDown  } from "lucide-react";
+import prequotes from "./Quote";
 
 
 export default function App() {
   const [isRun, setIsRun] = useState(false);
   const [totalSeconds, setTotalSeconds] = useState(0);
-  const [quotes, setQuotes] = useState([]);  // Fixed spelling here
+  const [quotes, setQuotes] = useState(prequotes);  // Fixed spelling here
   const intervalId = useRef(null); // Store interval reference
   const TotalSessionMinute = useRef(0)
   const [isBreak,setBreak] = useState(false)
   const [isPause,setIsPause] = useState(false)
   const [mode, setMode] = useState("");
+  let currentSessionMinute = useRef(0);
 
 
   let minutes = useRef(0);
@@ -42,6 +44,10 @@ export default function App() {
       minutes.current = 30 - Math.floor(totalSeconds/60);
       if (minutes.current == 0){
         TotalSessionMinute.current -= 30;
+        if (TotalSessionMinute.current >= 5)
+            currentSessionMinute.current = 5;
+        else
+            currentSessionMinute.current = TotalSessionMinute
         setTotalSeconds(0)
         setBreak(true)
       }}
@@ -55,6 +61,11 @@ export default function App() {
       minutes.current = 5 - Math.floor(totalSeconds/60);
       if (minutes.current == 0){
         TotalSessionMinute.current -= 5;
+
+      if (TotalSessionMinute.current >= 30)
+          currentSessionMinute.current = 30;
+      else
+          currentSessionMinute.current = TotalSessionMinute
         setTotalSeconds(0)
         setBreak(false) }}
     else{
@@ -66,6 +77,8 @@ export default function App() {
     },[totalSeconds,isRun,isBreak]);
 
   function clickHandler() {
+    setTotalSeconds(0)
+    setIsPause(false)
     setIsRun(prev => !prev);
   }
   function pauseHandler(){
@@ -75,7 +88,7 @@ export default function App() {
   return (
     <main className="grid grid-cols-2 grid-rows-4 gap-4 w-[90vw] h-screen items-start justify-center  m-0 p-0">
       <Mode mode={mode} setMode={setMode} />
-      {isRun ? <TimeStarter isPause = {isPause} pauseHandler={pauseHandler}  clickHandler={clickHandler} isRun={isRun} totalSeconds={totalSeconds}  minutes={ minutes.current} /> : <FocusSession TotalSessionMinute={TotalSessionMinute} setIsRun={setIsRun} mode={mode} />}
+      {isRun ? <TimeStarter isPause = {isPause} pauseHandler={pauseHandler}  clickHandler={clickHandler} isRun={isRun} totalSeconds={totalSeconds}  minutes={ minutes.current} currentSessionMinute={currentSessionMinute} /> : <FocusSession currentSessionMinute={currentSessionMinute} TotalSessionMinute={TotalSessionMinute} setIsRun={setIsRun} mode={mode} />}
       
       <Quotes quotes={quotes} setQuotes={setQuotes} isRun={isRun} /> {/* Fixed prop name here */}
     </main>
@@ -109,14 +122,14 @@ function Quotes({ quotes, setQuotes, isRun }) {
   const quoteRender = quotes.map((quote, index) => (
     <li 
       key={index} 
-      className="bg-gradient-to-r from-blue-100 to-emerald-50 text-black px-4 py-3 rounded-lg shadow-md font-semibold text-lg italic transition-transform transform hover:scale-105"
+      className=" text-left shadow-md pl-2 text-black font-semibold text-lg italic transition-transform transform hover:scale-105"
     >
       {quote}
     </li>
   ));
 
   return (
-    <div className="flex flex-col items-center gap-4 p-6 bg-gray-100 rounded-lg shadow-md h-full row-span-2">
+    <div className="flex flex-col items-center gap-4  bg-gray-100 rounded-lg shadow-md h-full row-span-2">
       {!isRun ? <><input 
         type="text" 
         value={newQuote} // Set value to the state to make it a controlled input
@@ -133,8 +146,8 @@ function Quotes({ quotes, setQuotes, isRun }) {
       </button> </> : ''}
       
     
-      <div className="w-full text-center text-gray-700 font-medium">
-        <ul className="space-y-3">
+      <div className=" deispaly w-full text-center text-gray-700  overflow-hidden">
+        <ul className="flex flex-col">
           {quoteRender}
         </ul>
       </div>
@@ -190,18 +203,20 @@ function Mode({mode, setMode}) {
 }
 
 
-function TimeStarter({ totalSeconds , minutes , pauseHandler , isPause }) {
+function TimeStarter({ totalSeconds , minutes , pauseHandler , isPause , clickHandler,currentSessionMinute }) {
   const [activeColors, setActiveColors] = useState(Array(24).fill(false));
+  
 
   useEffect(() => {
-    if (totalSeconds % 75 === 0) {
-      let index = Math.floor(totalSeconds / 75) - 1;
+    let intervalModuloForColoring = (Math.floor((currentSessionMinute.current * 60) / 24))
+    if (totalSeconds % intervalModuloForColoring === 0) {
+      let index = Math.floor(totalSeconds / intervalModuloForColoring) - 1;
 
       setActiveColors((prevActiveColors) =>
         prevActiveColors.map((color, i) => (i === index ? true : color))
       );
     }
-  }, [totalSeconds]);
+  }, [totalSeconds,currentSessionMinute]);
 
   const seconds = 60 -  totalSeconds % 60;
 
@@ -221,7 +236,7 @@ function TimeStarter({ totalSeconds , minutes , pauseHandler , isPause }) {
         ) : (
           <Play onClick={pauseHandler} size={32} className="cursor-pointer hover:scale-110 transition-transform" />
         )}
-        <button className="text-red-800 font-bold border-2 rounded-lg w-14 bg-amber-700 hover:scale-105 hover:bg-amber-500 transition">Stop</button>
+        <button onClick={clickHandler} className="text-blue-200 font-bold border-2 rounded-lg w-14 bg-gray-700 hover:scale-105 hover:bg-gray-800 transition">Stop</button>
       </div>
     </section>
   );
@@ -455,7 +470,7 @@ function CircularTicker({ children , activeColors }){
 }
 
 
-function FocusSession({TotalSessionMinute,setIsRun,mode}){
+function FocusSession({TotalSessionMinute,setIsRun,mode,currentSessionMinute}){
 
   const [totalMinutes,setTotalMinutes] = useState(0)
 
@@ -467,6 +482,10 @@ function FocusSession({TotalSessionMinute,setIsRun,mode}){
       alert("Enter your Mode")
     else{
       TotalSessionMinute.current = totalMinutes;
+      if (TotalSessionMinute >= 30)
+            currentSessionMinute.current = 30;
+      else
+        currentSessionMinute.current = TotalSessionMinute;
     setIsRun(true);
     }
       
