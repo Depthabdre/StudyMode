@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect, useRef } from "react";
 import { Play, Pause } from "lucide-react";
 import { ArrowUp, ArrowDown  } from "lucide-react";
@@ -86,8 +87,8 @@ export default function App() {
   }
 
   return (
-    <main className="grid grid-cols-2 grid-rows-4 gap-4 w-[90vw] h-screen items-start justify-center  m-0 p-0">
-      <Mode mode={mode} setMode={setMode} />
+    <main className="grid grid-cols-1 grid-rows-7 md:grid-cols-2  gap-4 w-[90vw] h-screen items-start justify-center p-0">
+      <Mode isPause={isPause} mode={mode} setMode={setMode} />
       {isRun ? <TimeStarter isPause = {isPause} pauseHandler={pauseHandler}  clickHandler={clickHandler} isRun={isRun} totalSeconds={totalSeconds}  minutes={ minutes.current} currentSessionMinute={currentSessionMinute} /> : <FocusSession currentSessionMinute={currentSessionMinute} TotalSessionMinute={TotalSessionMinute} setIsRun={setIsRun} mode={mode} />}
       
       <Quotes quotes={quotes} setQuotes={setQuotes} isRun={isRun} /> {/* Fixed prop name here */}
@@ -129,7 +130,7 @@ function Quotes({ quotes, setQuotes, isRun }) {
   ));
 
   return (
-    <div className="flex flex-col items-center gap-4  bg-gray-100 rounded-lg shadow-md h-full row-span-2">
+    <div className="flex flex-col items-center gap-4 bg-gray-100 rounded-lg shadow-md h-full row-span-3 ">
       {!isRun ? <><input 
         type="text" 
         value={newQuote} // Set value to the state to make it a controlled input
@@ -156,7 +157,7 @@ function Quotes({ quotes, setQuotes, isRun }) {
 }
 
 
-function Mode({mode, setMode}) {
+function Mode({mode, setMode,isPause}) {
   const [onEdit, setOnEdit] = useState(true);
   
   function editHandler() {
@@ -168,7 +169,7 @@ function Mode({mode, setMode}) {
   }
 
   return (
-    <div className="col-span-2 flex flex-col items-center justify-center gap-2 p-4">
+    <div className="  md:col-span-2 flex flex-col items-center justify-center gap-2 p-4">
       {onEdit ? (
         <>
           <input
@@ -178,7 +179,7 @@ function Mode({mode, setMode}) {
             onChange={onChangeHandler}
             className="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-         
+        
           <button
             onClick={editHandler}
             className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition"
@@ -190,12 +191,14 @@ function Mode({mode, setMode}) {
       ) : (
         <>
           <p className="text-4xl font-extrabold text-gray-900">{mode || "No Mode Set"}</p>
-          <button
+
+          {isPause &&  <button
             onClick={editHandler}
             className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition"
           >
             Edit
-          </button>
+          </button>}
+         
         </>
       )}
     </div>
@@ -206,22 +209,22 @@ function Mode({mode, setMode}) {
 function TimeStarter({ totalSeconds , minutes , pauseHandler , isPause , clickHandler,currentSessionMinute }) {
   const [activeColors, setActiveColors] = useState(Array(24).fill(false));
   
-
   useEffect(() => {
-    let intervalModuloForColoring = (Math.floor((currentSessionMinute.current * 60) / 24))
-    if (totalSeconds % intervalModuloForColoring === 0) {
-      let index = Math.floor(totalSeconds / intervalModuloForColoring) - 1;
+    let increment = ((currentSessionMinute.current * 60 )/ 24);
+    let index = Math.floor((totalSeconds / increment) ) - 1;    
+    
 
       setActiveColors((prevActiveColors) =>
         prevActiveColors.map((color, i) => (i === index ? true : color))
       );
     }
-  }, [totalSeconds,currentSessionMinute]);
+    
+  , [totalSeconds,currentSessionMinute]);
 
   const seconds = 60 -  totalSeconds % 60;
 
   return (
-    <section className='grid grid-rows-10 grid-cols-1 justify-center items-start  shadow-lg bg-gray-800 text-white p-8 rounded-lg h-full row-span-2 '>
+    <section className='grid grid-rows-10 grid-cols-1 justify-center items-start  shadow-lg bg-gray-800 text-white p-8 rounded-lg h-full row-span-3 '>
       <div className="row-span-9  aspect-square grid grid-cols-1 grid-rows-1 justify-center items-center shadow-md border-b-cyan-950 bg-gray-700 rounded-full h-full ">
         <CircularTicker activeColors={activeColors}>
           <p className="text-5xl font-extrabold font-mono tracking-wide ">
@@ -482,10 +485,10 @@ function FocusSession({TotalSessionMinute,setIsRun,mode,currentSessionMinute}){
       alert("Enter your Mode")
     else{
       TotalSessionMinute.current = totalMinutes;
-      if (TotalSessionMinute >= 30)
+      if (TotalSessionMinute.current >= 30)
             currentSessionMinute.current = 30;
       else
-        currentSessionMinute.current = TotalSessionMinute;
+        currentSessionMinute.current = TotalSessionMinute.current;
     setIsRun(true);
     }
       
@@ -509,7 +512,7 @@ function FocusSession({TotalSessionMinute,setIsRun,mode,currentSessionMinute}){
   }
 
 return (
-<section className='flex flex-col justify-start items-center  shadow-lg bg-gray-800 text-white p-8 rounded-lg h-full  row-span-2  gap-4'>
+<section className='flex flex-col justify-start items-center  shadow-lg bg-gray-800 text-white p-8 rounded-lg h-full  row-span-3  gap-4'>
 <div>
   <h1 className="font-extrabold from-stone-50">Get Ready to Focus</h1>
 </div>
