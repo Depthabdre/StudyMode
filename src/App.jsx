@@ -87,7 +87,7 @@ export default function App() {
   }
 
   return (
-    <main className="grid grid-cols-1 grid-rows-7 md:grid-cols-2  gap-4 w-[90vw] h-screen items-start justify-center p-0">
+    <main className="grid grid-rows-[auto_auto_auto] md:grid-cols-2  gap-4 w-[90vw] h-screen items-start justify-center p-0">
       <Mode isPause={isPause} mode={mode} setMode={setMode} />
       {isRun ? <TimeStarter isPause = {isPause} pauseHandler={pauseHandler}  clickHandler={clickHandler} isRun={isRun} totalSeconds={totalSeconds}  minutes={ minutes.current} currentSessionMinute={currentSessionMinute} /> : <FocusSession currentSessionMinute={currentSessionMinute} TotalSessionMinute={TotalSessionMinute} setIsRun={setIsRun} mode={mode} />}
       
@@ -104,22 +104,21 @@ export default function App() {
      
 
 function Quotes({ quotes, setQuotes, isRun }) {
-  const [newQuote, setNewQuote] = useState(""); // Fixed spelling
+  const [newQuote, setNewQuote] = useState(""); 
 
-  // Handler to add a new quote
+  
   function newQuoteHandler() {
-    if (newQuote.trim()) { // Check for non-empty input
-      setQuotes(prevQuotes => [...prevQuotes, newQuote]); // Use the functional form to get the latest quotes
-      setNewQuote(""); // Clear the input field after adding the quote
+    if (newQuote.trim()) { 
+      setQuotes(prevQuotes => [...prevQuotes, newQuote]);
     }
   }
 
-  // Handler to update the input field value
+ 
   function onChangeHandler(e) {
     setNewQuote(e.target.value);
   }
 
-  // Render the list of quotes
+  
   const quoteRender = quotes.map((quote, index) => (
     <li 
       key={index} 
@@ -130,29 +129,31 @@ function Quotes({ quotes, setQuotes, isRun }) {
   ));
 
   return (
-    <div className="flex flex-col items-center gap-4 bg-gray-100 rounded-lg shadow-md h-full row-span-3 ">
-      {!isRun ? <><input 
-        type="text" 
+    <div className="flex flex-col items-center gap-6 bg-gradient-to-br from-[#F7F7F8] to-[#E2E2E3] rounded-2xl shadow-xl h-full p-6">
+  {!isRun ? (
+    <>
+      <input
+        type="text"
         value={newQuote} // Set value to the state to make it a controlled input
-        onChange={onChangeHandler} 
-        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        onChange={onChangeHandler}
+        className="w-full px-4 py-3 border border-gray-300 rounded-full bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors duration-200"
         placeholder="Enter your quote..."
       />
-      
-      <button 
-        onClick={newQuoteHandler} 
-        className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-all"
+      <button
+        onClick={newQuoteHandler}
+        className="bg-blue-600 text-white px-6 py-2 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
       >
         Add Quote
-      </button> </> : ''}
-      
-    
-      <div className=" deispaly w-full text-center text-gray-700  overflow-hidden">
-        <ul className="flex flex-col">
-          {quoteRender}
-        </ul>
-      </div>
-    </div>
+      </button>
+    </>
+  ) : ''}
+  <div className="w-full text-center text-gray-800 font-sans  ">
+    <ul className="flex flex-col space-y-3 p-3">
+      {quoteRender}
+    </ul>
+  </div>
+</div>
+
   );
 }
 
@@ -177,7 +178,7 @@ function Mode({mode, setMode,isPause}) {
             placeholder="Enter The Mode..."
             value={mode}  // Ensures input retains value
             onChange={onChangeHandler}
-            className="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+           className=" px-4 py-3 border border-gray-300 rounded-full bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors duration-200"
           />
         
           <button
@@ -190,7 +191,7 @@ function Mode({mode, setMode,isPause}) {
         </>
       ) : (
         <>
-          <p className="text-4xl font-extrabold text-gray-900">{mode || "No Mode Set"}</p>
+          <p className="text-4xl font-extrabold text-white">{mode || "No Mode Set"}</p>
 
           {isPause &&  <button
             onClick={editHandler}
@@ -224,20 +225,20 @@ function TimeStarter({ totalSeconds , minutes , pauseHandler , isPause , clickHa
   const seconds = 60 -  totalSeconds % 60;
 
   return (
-    <section className='grid grid-rows-10 grid-cols-1 justify-center items-start  shadow-lg bg-gray-800 text-white p-8 rounded-lg h-full row-span-3 '>
-      <div className="row-span-9  aspect-square grid grid-cols-1 grid-rows-1 justify-center items-center shadow-md border-b-cyan-950 bg-gray-700 rounded-full h-full ">
+    <section className='grid grid-rows-11 grid-cols-1 justify-center place-items-center shadow-lg bg-gray-800 text-white p-2 rounded-lg h-full '>
+      
         <CircularTicker activeColors={activeColors}>
-          <p className="text-5xl font-extrabold font-mono tracking-wide ">
+          <p className="text-4xl font-extrabold font-mono tracking-wide ">
             {minutes - 1}:{String(seconds).padStart(2, '0')}
           </p>
         </CircularTicker>
-      </div>
+     
 
-      <div className="flex justify-center gap-4 items-center pt-3 ">
+      <div className="flex justify-center gap-4 items-center pt-5 row-span-2">
         { !isPause ? (
-          <Pause onClick={pauseHandler} size={32} className="cursor-pointer hover:scale-110 transition-transform" />
+          <Pause onClick={pauseHandler} size={30} className="cursor-pointer hover:scale-110 transition-transform" />
         ) : (
-          <Play onClick={pauseHandler} size={32} className="cursor-pointer hover:scale-110 transition-transform" />
+          <Play onClick={pauseHandler} size={30} className="cursor-pointer hover:scale-110 transition-transform" />
         )}
         <button onClick={clickHandler} className="text-blue-200 font-bold border-2 rounded-lg w-14 bg-gray-700 hover:scale-105 hover:bg-gray-800 transition">Stop</button>
       </div>
@@ -247,220 +248,240 @@ function TimeStarter({ totalSeconds , minutes , pauseHandler , isPause , clickHa
 
 function CircularTicker({ children , activeColors }){
 
+  const parentRef = useRef(null);
+  const [parentWidth, setParentWidth] = useState(0);
+
+ 
+  useEffect(() => {
+    const updateWidth = () => {
+      if (parentRef.current) {
+        setParentWidth(parentRef.current.getBoundingClientRect().width);
+      }
+    };
+
+    
+    updateWidth();
+
+    
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
+
+  let precentWidth =  0.65 * (parentWidth/2);
   return (
     <>
-  <div className="relative  flex flex-col items-center justify-center ">
-
+  <div   ref={parentRef} className="relative row-span-9  aspect-square grid grid-cols-1 grid-rows-1 justify-center place-items-center shadow-md border-b-cyan-950 bg-gray-700 rounded-full h-full ">
  
      
       <div
-        className={`absolute ${activeColors[0] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[0] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(0deg) translateX(80px)"}}
+          transform: `rotate(0deg) translateX(${precentWidth}px)`
+        }}
         
       ></div>
       <div
-        className={`absolute ${activeColors[1] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[1] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(15deg) translateX(80px)"}}
+          transform:  `rotate(15deg) translateX(${precentWidth}px)`}}
       ></div>
       <div
-        className={`absolute ${activeColors[2] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[2] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(30deg) translateX(80px)"}}
+          transform:`rotate(30deg) translateX(${precentWidth}px)`}}
       ></div>
       <div
-        className={`absolute ${activeColors[3] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[3] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(45deg) translateX(80px)"}}
+          transform:`rotate(45deg) translateX(${precentWidth}px)`}}
       ></div>
       <div
-        className={`absolute ${activeColors[4] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[4] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(60deg) translateX(80px)"}}
+          transform:`rotate(60deg) translateX(${precentWidth}px)`}}
       ></div>
       <div
-        className={`absolute ${activeColors[5] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[5] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(75deg) translateX(80px)"}}
+          transform:`rotate(75deg) translateX(${precentWidth}px)`}}
       ></div>
       <div
-        className={`absolute ${activeColors[6] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[6] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(90deg) translateX(80px)"}}
+          transform:`rotate(90deg) translateX(${precentWidth}px)`}}
       ></div>
        <div
-        className={`absolute ${activeColors[7] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[7] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(105deg) translateX(80px)"
+          transform:`rotate(105deg) translateX(${precentWidth}px)`
         }}
       ></div>
       <div
-        className={`absolute ${activeColors[8] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[8] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(120deg) translateX(80px)"
+          transform:`rotate(120deg) translateX(${precentWidth}px)`
         }}
       ></div>
       <div
-        className={`absolute ${activeColors[9] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[9] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(135deg) translateX(80px)"
+          transform:`rotate(135deg) translateX(${precentWidth}px)`
         }}
       ></div>
       <div
-        className={`absolute ${activeColors[10] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[10] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(150deg) translateX(80px)"
+          transform:`rotate(150deg) translateX(${precentWidth}px)`
         }}
       ></div>
       <div
-        className={`absolute ${activeColors[11] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[11] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(165deg) translateX(80px)"
+          transform:`rotate(165deg) translateX(${precentWidth}px)`
         }}
       ></div>
       <div
-        className={`absolute ${activeColors[12] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[12] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(180deg) translateX(80px)"
+          transform:`rotate(180deg) translateX(${precentWidth}px)`
         }}
       ></div>
       <div
-        className={`absolute ${activeColors[13] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[13] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(195deg) translateX(80px)"
+          transform:`rotate(195deg) translateX(${precentWidth}px)`
         }}
       ></div>
       <div
-        className={`absolute ${activeColors[14] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[14] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(210deg) translateX(80px)"
+          transform:`rotate(210deg) translateX(${precentWidth}px)`
         }}
       ></div>
       <div
-        className={`absolute ${activeColors[15] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[15] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(225deg) translateX(80px)"
+          transform:`rotate(225deg) translateX(${precentWidth}px)`
         }}
       ></div>
       <div
-        className={`absolute ${activeColors[16] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[16] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(240deg) translateX(80px)"
+          transform:`rotate(240deg) translateX(${precentWidth}px)`
         }}
       ></div>
       <div
-        className={`absolute ${activeColors[17] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[17] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(255deg) translateX(80px)"
+          transform:`rotate(255deg) translateX(${precentWidth}px)`
         }}
       ></div>
       <div
-        className={`absolute ${activeColors[18] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[18] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(270deg) translateX(80px)"
+          transform:`rotate(270deg) translateX(${precentWidth}px)`
         }}
       ></div>
       <div
-        className={`absolute ${activeColors[19] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[19] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(285deg) translateX(80px)"
+          transform:`rotate(285deg) translateX(${precentWidth}px)`
         }}
       ></div>
       <div
-        className={`absolute ${activeColors[20] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[20] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(300deg) translateX(80px)"
+          transform:`rotate(300deg) translateX(${precentWidth}px)`
         }}
       ></div>
       <div
-        className={`absolute ${activeColors[21] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[21] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(315deg) translateX(80px)"
+          transform:`rotate(315deg) translateX(${precentWidth}px)`
         }}
       ></div>
       <div
-        className={`absolute ${activeColors[22] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[22] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(330deg) translateX(80px)"
+          transform:`rotate(330deg) translateX(${precentWidth}px)`
         }}
       ></div>
       <div
-        className={`absolute ${activeColors[23] ? "bg-blue-500" : "bg-gray-500"} w-6 h-2 rounded-full`}
+        className={`absolute ${activeColors[23] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
         style={{
           top: "50%",
           left: "50%",
           transformOrigin: "left center",
-          transform: "rotate(345deg) translateX(80px)"
+          transform:`rotate(345deg) translateX(${precentWidth}px)`
         }}
       ></div>
      
@@ -512,7 +533,7 @@ function FocusSession({TotalSessionMinute,setIsRun,mode,currentSessionMinute}){
   }
 
 return (
-<section className='flex flex-col justify-start items-center  shadow-lg bg-gray-800 text-white p-8 rounded-lg h-full  row-span-3  gap-4'>
+<section className='flex flex-col justify-start items-center  shadow-lg bg-gray-800 text-white p-8 rounded-lg h-full gap-4'>
 <div>
   <h1 className="font-extrabold from-stone-50">Get Ready to Focus</h1>
 </div>
