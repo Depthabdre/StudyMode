@@ -15,6 +15,7 @@ export default function App() {
   const [isPause,setIsPause] = useState(false)
   const [mode, setMode] = useState("");
   let currentSessionMinute = useRef(0);
+  let sessionBreakPoint = useRef([1,1]); // for enjoing session and  break respectively 
 
 
   let minutes = useRef(0);
@@ -39,9 +40,12 @@ export default function App() {
     };
   }, [isRun,isPause]);
 
+
   useEffect(() => {
     if(!isRun) return;
+
     if (TotalSessionMinute.current >= 30 && !isBreak){
+
       minutes.current = 30 - Math.floor(totalSeconds/60);
       if (minutes.current == 0){
         TotalSessionMinute.current -= 30;
@@ -49,9 +53,12 @@ export default function App() {
             currentSessionMinute.current = 5;
         else
             currentSessionMinute.current = TotalSessionMinute
+        sessionBreakPoint.current[0] += 1
         setTotalSeconds(0)
         setBreak(true)
+
       }}
+
     else if (TotalSessionMinute.current < 30 && !isBreak){
       minutes.current = TotalSessionMinute.current - (Math.floor(totalSeconds/60))
       if (minutes.current == 0){
@@ -67,6 +74,7 @@ export default function App() {
           currentSessionMinute.current = 30;
       else
           currentSessionMinute.current = TotalSessionMinute
+        sessionBreakPoint.current[1] += 1
         setTotalSeconds(0)
         setBreak(false) }}
     else{
@@ -87,9 +95,9 @@ export default function App() {
   }
 
   return (
-    <main className="grid grid-rows-[auto_auto_auto] md:grid-cols-2  gap-4 w-[90vw] h-screen items-start justify-center p-0">
+    <main className="grid grid-rows-[auto_1fr_auto] md:grid-rows-[auto_auto_auto] md:grid-cols-2  gap-4 w-[90vw] h-screen items-start justify-center p-0">
       <Mode isPause={isPause} mode={mode} setMode={setMode} />
-      {isRun ? <TimeStarter isPause = {isPause} pauseHandler={pauseHandler}  clickHandler={clickHandler} isRun={isRun} totalSeconds={totalSeconds}  minutes={ minutes.current} currentSessionMinute={currentSessionMinute} /> : <FocusSession currentSessionMinute={currentSessionMinute} TotalSessionMinute={TotalSessionMinute} setIsRun={setIsRun} mode={mode} />}
+      {isRun ? <TimeStarter isPause = {isPause} TotalSessionMinute={TotalSessionMinute} pauseHandler={pauseHandler} sessionBreakPoint={sessionBreakPoint} clickHandler={clickHandler} isRun={isRun} totalSeconds={totalSeconds}  minutes={ minutes.current} currentSessionMinute={currentSessionMinute} /> : <FocusSession currentSessionMinute={currentSessionMinute} TotalSessionMinute={TotalSessionMinute} setIsRun={setIsRun} mode={mode} />}
       
       <Quotes quotes={quotes} setQuotes={setQuotes} isRun={isRun} /> {/* Fixed prop name here */}
     </main>
@@ -122,14 +130,14 @@ function Quotes({ quotes, setQuotes, isRun }) {
   const quoteRender = quotes.map((quote, index) => (
     <li 
       key={index} 
-      className=" text-left shadow-md pl-2 text-black font-semibold text-lg italic transition-transform transform hover:scale-105"
+      className=" font-serif  text-left shadow-sm pl-2 text-white font-bold text-lg  transition-transform transform hover:scale-105"
     >
       {quote}
     </li>
   ));
 
   return (
-    <div className="flex flex-col items-center gap-6 bg-gradient-to-br from-[#F7F7F8] to-[#E2E2E3] rounded-2xl shadow-xl h-full p-6">
+    <div className="flex flex-col items-center gap-6  bg-gray-800  rounded-2xl shadow-xl h-full p-6">
   {!isRun ? (
     <>
       <input
@@ -207,8 +215,10 @@ function Mode({mode, setMode,isPause}) {
 }
 
 
-function TimeStarter({ totalSeconds , minutes , pauseHandler , isPause , clickHandler,currentSessionMinute }) {
+function TimeStarter({ totalSeconds , minutes , pauseHandler , isPause , clickHandler,currentSessionMinute ,sessionBreakPoint,TotalSessionMinute}) {
   const [activeColors, setActiveColors] = useState(Array(24).fill(false));
+
+
   
   useEffect(() => {
     let increment = ((currentSessionMinute.current * 60 )/ 24);
@@ -225,10 +235,19 @@ function TimeStarter({ totalSeconds , minutes , pauseHandler , isPause , clickHa
   const seconds = 60 -  totalSeconds % 60;
 
   return (
-    <section className='grid grid-rows-11 grid-cols-1 justify-center place-items-center shadow-lg bg-gray-800 text-white p-2 rounded-lg h-full '>
-      
+    <section className='flex flex-col justify-center place-items-center shadow-lg bg-gray-800 text-white p-2 rounded-lg h-full '>
+        {isPause ? (
+   <p className="self-start text-lg font-semibold px-4 py-2 rounded-lg ">
+      Break {sessionBreakPoint.current[1]} of {Math.ceil(TotalSessionMinute.current / 35)}
+    </p>
+  ) : (
+    <p className="self-start text-lg font-semibold px-4 py-2 rounded-lg ">
+      Joy Session {sessionBreakPoint.current[0]} of {Math.ceil(TotalSessionMinute.current / 35)}
+    </p>
+  )}
+     
         <CircularTicker activeColors={activeColors}>
-          <p className="text-4xl font-extrabold font-mono tracking-wide ">
+          <p className="text-xl md:text-4xl font-extrabold font-mono tracking-wide ">
             {minutes - 1}:{String(seconds).padStart(2, '0')}
           </p>
         </CircularTicker>
@@ -270,7 +289,7 @@ function CircularTicker({ children , activeColors }){
   let precentWidth =  0.65 * (parentWidth/2);
   return (
     <>
-  <div   ref={parentRef} className="relative row-span-9  aspect-square grid grid-cols-1 grid-rows-1 justify-center place-items-center shadow-md border-b-cyan-950 bg-gray-700 rounded-full h-full ">
+  <div   ref={parentRef} className="relative flex-grow  aspect-square flex flex-col justify-center place-items-center shadow-md border-b-cyan-950 bg-gray-700 rounded-full h-full  ">
  
      
       <div
@@ -535,7 +554,7 @@ function FocusSession({TotalSessionMinute,setIsRun,mode,currentSessionMinute}){
 return (
 <section className='flex flex-col justify-start items-center  shadow-lg bg-gray-800 text-white p-8 rounded-lg h-full gap-4'>
 <div>
-  <h1 className="font-extrabold from-stone-50">Get Ready to Focus</h1>
+  <h1 className="font-extrabold from-stone-50">Focus here and now</h1>
 </div>
 <div className="grid grid-rows-2 grid-cols-3  bg-gray-700 rounded-[7px] w-2/3 h-1/4  ">
   <div className="row-span-2 col-span-2 flex flex-col justify-between items-center border-l-neutral-300 border-r-2 pr-2">
@@ -547,7 +566,7 @@ return (
   value = {totalMinutes}
   onChange={onChangeHandler}
   onInput={(e) => e.target.value = e.target.value.replace(/\D/g, '')}
-  className="font-bold text-3xl w-2/3 h-3/7 m-auto text-center border border-transparent rounded-md outline-none transition duration-200 
+  className="font-bold text-xl md:text-3xl w-2/3 h-3/7 m-auto text-center border border-transparent rounded-md outline-none transition duration-200 
              focus:border-blue-500 focus:ring-2 focus:ring-blue-300 
              hover:border-gray-400"
 />
