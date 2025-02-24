@@ -16,8 +16,16 @@ export default function App() {
   const [mode, setMode] = useState("");
   let currentSessionMinute = useRef(0);
   let sessionBreakPoint = useRef([1,1]); // for enjoing session and  break respectively 
+  const notificationComponent = useRef(null);
+
+/*  
+
+let audio = new audio("./assets/Remainder.mp3")
+audio.play()
 
 
+
+*/
   let minutes = useRef(0);
 
   useEffect(() => {
@@ -43,8 +51,9 @@ export default function App() {
 
   useEffect(() => {
     if(!isRun) return;
-
+   
     if (TotalSessionMinute.current >= 30 && !isBreak){
+  
 
       minutes.current = 30 - Math.floor(totalSeconds/60);
       if (minutes.current == 0){
@@ -53,6 +62,12 @@ export default function App() {
             currentSessionMinute.current = 5;
         else
             currentSessionMinute.current = TotalSessionMinute
+
+        const audio = new Audio("/Remainder.mp3");
+          audio.play()
+        setTimeout(()=>{
+          audio.play();
+        },9000);
         sessionBreakPoint.current[0] += 1
         setTotalSeconds(0)
         setBreak(true)
@@ -60,12 +75,18 @@ export default function App() {
       }}
 
     else if (TotalSessionMinute.current < 30 && !isBreak){
+      
       minutes.current = TotalSessionMinute.current - (Math.floor(totalSeconds/60))
       if (minutes.current == 0){
+        const audio = new Audio("/Remainder.mp3");
+        audio.play()
+      setTimeout(()=>{
+        audio.play();
+      },9000);
         setIsRun(false)
       }
     }
-    else if (TotalSessionMinute.current >= 5 && !isBreak){
+    else if (TotalSessionMinute.current >= 5 && isBreak){
       minutes.current = 5 - Math.floor(totalSeconds/60);
       if (minutes.current == 0){
         TotalSessionMinute.current -= 5;
@@ -74,6 +95,12 @@ export default function App() {
           currentSessionMinute.current = 30;
       else
           currentSessionMinute.current = TotalSessionMinute
+
+          const audio = new Audio("/Remainder.mp3");
+          audio.play()
+        setTimeout(()=>{
+          audio.play();
+        },9000);
         sessionBreakPoint.current[1] += 1
         setTotalSeconds(0)
         setBreak(false) }}
@@ -81,6 +108,12 @@ export default function App() {
       minutes.current = TotalSessionMinute.current - Math.floor(totalSeconds/60);
       if (minutes.current == 0){
         TotalSessionMinute.current = 0;
+
+        const audio = new Audio("/Remainder.mp3");
+        audio.play()
+      setTimeout(()=>{
+        audio.play();
+      },9000);
         isRun(false);
         }}
     },[totalSeconds,isRun,isBreak]);
@@ -94,13 +127,26 @@ export default function App() {
     setIsPause(prevPause => !prevPause)
   }
 
+  function onClose() {
+    if (notificationComponent.current) {
+      let element = notificationComponent.current;
+      element.style.visibility = 'hidden'; 
+    }
+  }
+  
+
   return (
-    <main className="grid grid-rows-[auto_1fr_auto] md:grid-rows-[auto_auto_auto] md:grid-cols-2  gap-4 w-[90vw] h-screen items-start justify-center p-0">
+    <>
+    <main className="grid grid-rows-[auto_300px_auto] md:grid-rows-[auto_auto_auto] md:grid-cols-2 gap-4 w-[90vw] min-h-screen items-start justify-center p-0">
+
       <Mode isPause={isPause} mode={mode} setMode={setMode} />
       {isRun ? <TimeStarter isPause = {isPause} TotalSessionMinute={TotalSessionMinute} pauseHandler={pauseHandler} sessionBreakPoint={sessionBreakPoint} clickHandler={clickHandler} isRun={isRun} totalSeconds={totalSeconds}  minutes={ minutes.current} currentSessionMinute={currentSessionMinute} /> : <FocusSession currentSessionMinute={currentSessionMinute} TotalSessionMinute={TotalSessionMinute} setIsRun={setIsRun} mode={mode} />}
       
-      <Quotes quotes={quotes} setQuotes={setQuotes} isRun={isRun} /> {/* Fixed prop name here */}
+      <Quotes quotes={quotes} setQuotes={setQuotes} isRun={isRun} /> 
     </main>
+    <Notification notificationComponent={notificationComponent} isBreak={isBreak} onClose={onClose} />
+  
+    </>
   );
 }
 
@@ -237,7 +283,7 @@ function TimeStarter({ totalSeconds , minutes , pauseHandler , isPause , clickHa
   return (
     <section className='flex flex-col justify-center place-items-center shadow-lg bg-gray-800 text-white p-2 rounded-lg h-full '>
         {isPause ? (
-   <p className="self-start text-lg font-semibold px-4 py-2 rounded-lg ">
+   <p className="self-start   text-lg font-semibold px-4 py-2 rounded-lg ">
       Break {sessionBreakPoint.current[1]} of {Math.ceil(TotalSessionMinute.current / 35)}
     </p>
   ) : (
@@ -289,7 +335,7 @@ function CircularTicker({ children , activeColors }){
   let precentWidth =  0.65 * (parentWidth/2);
   return (
     <>
-  <div   ref={parentRef} className="relative flex-grow  aspect-square flex flex-col justify-center place-items-center shadow-md border-b-cyan-950 bg-gray-700 rounded-full h-full  ">
+  <div   ref={parentRef} className="relative aspect-square flex flex-col justify-center place-items-center shadow-md border-b-cyan-950 bg-gray-700 rounded-full h-full md:h-1/2 lg:h-3/4">
  
      
       <div
@@ -552,7 +598,7 @@ function FocusSession({TotalSessionMinute,setIsRun,mode,currentSessionMinute}){
   }
 
 return (
-<section className='flex flex-col justify-start items-center  shadow-lg bg-gray-800 text-white p-8 rounded-lg h-full gap-4'>
+<section className='flex flex-col justify-start items-center  shadow-lg bg-gray-800 text-white p-8 rounded-lg h-full gap-4 select-none'>
 <div>
   <h1 className="font-extrabold from-stone-50">Focus here and now</h1>
 </div>
@@ -597,6 +643,37 @@ return (
 </section>
 );
 
+}
+
+
+function Notification({ isBreak, onClose ,notificationComponent }) {
+  return (
+    <div className="fixed bottom-0 left-0 bg-gray-100 border border-gray-300 shadow-lg rounded-lg p-4 m-4 w-72">
+    
+      <div className="flex justify-end">
+        <button 
+          onClick={onClose} 
+          className="text-gray-600 hover:text-gray-900"
+          aria-label="Close notification"
+        >
+          X
+        </button>
+      </div>
+
+    
+      <div className="mt-2 text-center">
+        {isBreak ? (
+          <p className="text-lg font-semibold text-green-700">
+            Break is Over, Time to Enjoy Your Session
+          </p>
+        ) : (
+          <p className="text-lg font-semibold text-blue-700">
+            Enjoying Session is Over, Time for a Break
+          </p>
+        )}
+      </div>
+    </div>
+  );
 }
 
 
