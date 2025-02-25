@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef,useCallback } from "react";
 import { Play, Pause } from "lucide-react";
 import { ArrowUp, ArrowDown  } from "lucide-react";
 import prequotes from "./Quote";
@@ -10,22 +10,13 @@ export default function App() {
   const [totalSeconds, setTotalSeconds] = useState(0);
   const [quotes, setQuotes] = useState(prequotes);  // Fixed spelling here
   const intervalId = useRef(null); // Store interval reference
-  const TotalSessionMinute = useRef(0)
+  const TotalSessionMinute = useRef(30)
   const [isBreak,setBreak] = useState(false)
   const [isPause,setIsPause] = useState(false)
   const [mode, setMode] = useState("");
-  let currentSessionMinute = useRef(0);
+  let currentSessionMinute = useRef(30);
   let sessionBreakPoint = useRef([1,1]); // for enjoing session and  break respectively 
-  const notificationComponent = useRef(null);
-
-/*  
-
-let audio = new audio("./assets/Remainder.mp3")
-audio.play()
-
-
-
-*/
+  const [isVisible, setIsVisible] = useState(false);
   let minutes = useRef(0);
 
   useEffect(() => {
@@ -48,75 +39,116 @@ audio.play()
     };
   }, [isRun,isPause]);
 
-
-  useEffect(() => {
-    if(!isRun) return;
-   
-    if (TotalSessionMinute.current >= 30 && !isBreak){
+  const onClose = useCallback(() => {
+    setIsVisible((prev) => !prev); // toggle visibility
+  }, []);
   
 
-      minutes.current = 30 - Math.floor(totalSeconds/60);
-      if (minutes.current == 0){
+  useEffect(() => {
+    if (!isRun) return;
+  
+    if (TotalSessionMinute.current >= 30 && !isBreak) {
+      minutes.current = 30 - Math.floor(totalSeconds / 60);
+  
+      if (minutes.current == 0) {
         TotalSessionMinute.current -= 30;
-        if (TotalSessionMinute.current >= 5)
-            currentSessionMinute.current = 5;
-        else
-            currentSessionMinute.current = TotalSessionMinute
-
+  
+        if (TotalSessionMinute.current >= 5) 
+          currentSessionMinute.current = 5;
+        else 
+          currentSessionMinute.current = TotalSessionMinute.current;
+  
+        onClose();
+  
         const audio = new Audio("/Remainder.mp3");
-          audio.play()
-        setTimeout(()=>{
-          audio.play();
-        },9000);
-        sessionBreakPoint.current[0] += 1
-        setTotalSeconds(0)
-        setBreak(true)
-
-      }}
-
-    else if (TotalSessionMinute.current < 30 && !isBreak){
-      
-      minutes.current = TotalSessionMinute.current - (Math.floor(totalSeconds/60))
-      if (minutes.current == 0){
-        const audio = new Audio("/Remainder.mp3");
-        audio.play()
-      setTimeout(()=>{
         audio.play();
-      },9000);
-        setIsRun(false)
+  
+        setTimeout(() => {
+          audio.play();
+        }, 9000);
+  
+        setTimeout(() => {
+          onClose();
+        }, 18000);
+  
+        sessionBreakPoint.current[0] += 1;
+        setTotalSeconds(0);
+        setBreak(true);
+      }
+    } 
+    else if (TotalSessionMinute.current < 30 && !isBreak) {
+      minutes.current = TotalSessionMinute.current - Math.floor(totalSeconds / 60);
+  
+      if (minutes.current == 0) {
+        onClose();
+  
+        const audio = new Audio("/Remainder.mp3");
+        audio.play();
+  
+        setTimeout(() => {
+          audio.play();
+        }, 9000);
+  
+        setTimeout(() => {
+          onClose();
+        }, 18000);
+  
+        setIsRun(false);
+      }
+    } 
+    else if (TotalSessionMinute.current >= 5 && isBreak) {
+      minutes.current = 5 - Math.floor(totalSeconds / 60);
+  
+      if (minutes.current == 0) {
+        TotalSessionMinute.current -= 5;
+  
+        if (TotalSessionMinute.current >= 30) 
+          currentSessionMinute.current = 30;
+        else 
+          currentSessionMinute.current = TotalSessionMinute.current;
+  
+        onClose();
+  
+        const audio = new Audio("/Remainder.mp3");
+        audio.play();
+  
+        setTimeout(() => {
+          audio.play();
+        }, 9000);
+  
+        setTimeout(() => {
+          onClose();
+        }, 18000);
+  
+        sessionBreakPoint.current[1] += 1;
+        setTotalSeconds(0);
+        setBreak(false);
+      }
+    } 
+    else {
+      minutes.current = TotalSessionMinute.current - Math.floor(totalSeconds / 60);
+  
+      if (minutes.current == 0) {
+        TotalSessionMinute.current = 0;
+  
+        onClose();
+  
+        const audio = new Audio("/Remainder.mp3");
+        audio.play();
+  
+        setTimeout(() => {
+          audio.play();
+        }, 9000);
+  
+        setTimeout(() => {
+          onClose();
+        }, 18000);
+  
+        setIsRun(false);
       }
     }
-    else if (TotalSessionMinute.current >= 5 && isBreak){
-      minutes.current = 5 - Math.floor(totalSeconds/60);
-      if (minutes.current == 0){
-        TotalSessionMinute.current -= 5;
-
-      if (TotalSessionMinute.current >= 30)
-          currentSessionMinute.current = 30;
-      else
-          currentSessionMinute.current = TotalSessionMinute
-
-          const audio = new Audio("/Remainder.mp3");
-          audio.play()
-        setTimeout(()=>{
-          audio.play();
-        },9000);
-        sessionBreakPoint.current[1] += 1
-        setTotalSeconds(0)
-        setBreak(false) }}
-    else{
-      minutes.current = TotalSessionMinute.current - Math.floor(totalSeconds/60);
-      if (minutes.current == 0){
-        TotalSessionMinute.current = 0;
-
-        const audio = new Audio("/Remainder.mp3");
-        audio.play()
-      setTimeout(()=>{
-        audio.play();
-      },9000);
-        isRun(false);
-        }}
-    },[totalSeconds,isRun,isBreak]);
+  }, [totalSeconds, isRun, isBreak, isVisible, onClose]);
+  
 
   function clickHandler() {
     setTotalSeconds(0)
@@ -127,13 +159,7 @@ audio.play()
     setIsPause(prevPause => !prevPause)
   }
 
-  function onClose() {
-    if (notificationComponent.current) {
-      let element = notificationComponent.current;
-      element.style.visibility = 'hidden'; 
-    }
-  }
-  
+ 
 
   return (
     <>
@@ -144,7 +170,7 @@ audio.play()
       
       <Quotes quotes={quotes} setQuotes={setQuotes} isRun={isRun} /> 
     </main>
-    <Notification notificationComponent={notificationComponent} isBreak={isBreak} onClose={onClose} />
+    <Notification isVisible={isVisible} isBreak={isBreak} onClose={onClose} />
   
     </>
   );
@@ -646,9 +672,9 @@ return (
 }
 
 
-function Notification({ isBreak, onClose ,notificationComponent }) {
+function Notification({ isBreak, onClose ,isVisible }) {
   return (
-    <div className="fixed bottom-0 left-0 bg-gray-100 border border-gray-300 shadow-lg rounded-lg p-4 m-4 w-72">
+    <div style={{ visibility: isVisible ? "visible" : "hidden" }} className="fixed bottom-0 right-0  bg-gray-100 border border-gray-300 shadow-lg rounded-lg p-4 m-4 w-72">
     
       <div className="flex justify-end">
         <button 
