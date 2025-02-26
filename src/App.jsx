@@ -1,4 +1,6 @@
 /* eslint-disable react/prop-types */
+// import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+// import LearningPage from "./LearningPage";
 import { useState, useEffect, useRef,useCallback } from "react";
 import { Play, Pause } from "lucide-react";
 import { ArrowUp, ArrowDown  } from "lucide-react";
@@ -163,6 +165,8 @@ export default function App() {
 
   return (
     <>
+   
+   
     <main className="grid grid-rows-[auto_300px_auto] md:grid-rows-[auto_auto_auto] md:grid-cols-2 gap-4 w-[90vw] min-h-screen items-start justify-center p-0">
 
       <Mode isPause={isPause} mode={mode} setMode={setMode} />
@@ -197,16 +201,25 @@ function Quotes({ quotes, setQuotes, isRun }) {
   function onChangeHandler(e) {
     setNewQuote(e.target.value);
   }
+  function deleteHandler(index){
+    setQuotes(quotes.filter(( quote, i ) => i != Number(index) ))
+  }
 
   
   const quoteRender = quotes.map((quote, index) => (
     <li 
       key={index} 
-      className=" font-serif  text-left shadow-sm pl-2 text-white font-bold text-lg  transition-transform transform hover:scale-105"
+      className="font-serif text-left shadow-sm pl-2 text-white font-bold text-lg transition-transform transform hover:scale-105 flex justify-between items-center"
     >
       {quote}
+      {!isRun && (
+        <button onClick = { () => deleteHandler(index) } className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition ">
+          Delete
+        </button>
+      )}
     </li>
   ));
+  
 
   return (
     <div className="flex flex-col items-center gap-6  bg-gray-800  rounded-2xl shadow-xl h-full p-6">
@@ -698,6 +711,18 @@ function Notification({ isBreak, onClose ,isVisible }) {
           </p>
         )}
       </div>
+    </div>
+  );
+}
+
+
+
+function FloatingButton() {
+  return (
+    <div className="fixed right-4 top-4 bg-amber-900 text-white px-4 py-2 rounded-md shadow-lg hover:bg-amber-700 transition-all">
+      <Link to="/learning" className="text-white text-sm font-semibold">
+        Learn How to Focus
+      </Link>
     </div>
   );
 }
