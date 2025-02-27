@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-// import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-// import LearningPage from "./LearningPage";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Learning from "./LearningPage";
 import { useState, useEffect, useRef,useCallback } from "react";
 import { Play, Pause } from "lucide-react";
 import { ArrowUp, ArrowDown  } from "lucide-react";
@@ -164,19 +164,50 @@ export default function App() {
  
 
   return (
-    <>
-   
-   
-    <main className="grid grid-rows-[auto_300px_auto] md:grid-rows-[auto_auto_auto] md:grid-cols-2 gap-4 w-[90vw] min-h-screen items-start justify-center p-0">
-
-      <Mode isPause={isPause} mode={mode} setMode={setMode} />
-      {isRun ? <TimeStarter isPause = {isPause} TotalSessionMinute={TotalSessionMinute} pauseHandler={pauseHandler} sessionBreakPoint={sessionBreakPoint} clickHandler={clickHandler} isRun={isRun} totalSeconds={totalSeconds}  minutes={ minutes.current} currentSessionMinute={currentSessionMinute} /> : <FocusSession currentSessionMinute={currentSessionMinute} TotalSessionMinute={TotalSessionMinute} setIsRun={setIsRun} mode={mode} />}
-      
-      <Quotes quotes={quotes} setQuotes={setQuotes} isRun={isRun} /> 
-    </main>
-    <Notification isVisible={isVisible} isBreak={isBreak} onClose={onClose} />
-  
-    </>
+    <Router>  {/* ✅ Wrap entire app with Router */}
+      <>
+       
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+               <FloatingButton />
+              <main className="grid grid-rows-[auto_300px_auto] md:grid-rows-[auto_auto_auto] md:grid-cols-2 gap-4 w-[90vw] min-h-screen items-start justify-center p-0">
+                <Mode isPause={isPause} mode={mode} setMode={setMode} />
+                {isRun ? (
+                  <TimeStarter
+                    isPause={isPause}
+                    TotalSessionMinute={TotalSessionMinute}
+                    pauseHandler={pauseHandler}
+                    sessionBreakPoint={sessionBreakPoint}
+                    clickHandler={clickHandler}
+                    isRun={isRun}
+                    totalSeconds={totalSeconds}
+                    minutes={minutes.current}
+                    currentSessionMinute={currentSessionMinute}
+                  />
+                ) : (
+                  <FocusSession
+                    currentSessionMinute={currentSessionMinute}
+                    TotalSessionMinute={TotalSessionMinute}
+                    setIsRun={setIsRun}
+                    mode={mode}
+                  />
+                )}
+                <Quotes quotes={quotes} setQuotes={setQuotes} isRun={isRun} />
+               
+              </main>
+              <Notification isVisible={isVisible} isBreak={isBreak} onClose={onClose} />
+              </>
+              
+            }
+          />
+          <Route path="/LearningPage" element={<Learning />} /> 
+        </Routes>
+       
+      </>
+    </Router>
   );
 }
 
@@ -670,7 +701,7 @@ return (
 </div>
 
 <div>
-  <p className="text-emerald-50 font-semibold ">you'll have {breaks} breaks </p>
+  <p className="text-emerald-50 font-semibold "> You'll have {breaks} breaks </p>
 </div>
 
 <div className="bg-blue-700 rounded-md p-2 text-blue-50 font-bold hover:scale-110 transition-transform duration-500 ease-linear">
@@ -720,7 +751,7 @@ function Notification({ isBreak, onClose ,isVisible }) {
 function FloatingButton() {
   return (
     <div className="fixed right-4 top-4 bg-amber-900 text-white px-4 py-2 rounded-md shadow-lg hover:bg-amber-700 transition-all">
-      <Link to="/learning" className="text-white text-sm font-semibold">
+      <Link to="/LearningPage" className="text-white text-sm font-semibold">
         Learn How to Focus
       </Link>
     </div>
