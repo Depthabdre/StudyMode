@@ -2,7 +2,7 @@
 
 function Learning() {
   return (
-    <main className="flex flex-col  bg-gray-800 ">
+    <main className="flex flex-col justify-center items-center bg-gray-900 text-white p-6 rounded-lg shadow-lg border border-gray-700  ">
         <Intro/>
     </main>
   );
@@ -10,29 +10,15 @@ function Learning() {
 
 function Intro(){
     return (
-        <>
-    <section className="bg-gray-900 text-white p-6 rounded-lg shadow-lg border border-gray-700 max-w-3xl mx-auto mt-10">
-        <h1 className=" text-3xl font-bold text-amber-400 mb-4">Quick Review</h1>
-        <p className="text-gray-300 text-lg mb-6">
-            Learn the fundamentals of focus and how to master deep concentration.
-        </p>
-
-        <div className="bg-gray-800 p-5 rounded-lg shadow-md border-l-4 border-amber-500">
-            <h3 className="text-xl font-semibold mb-3 text-amber-300">You will learn about:</h3>
-            <ul className="list-disc list-inside space-y-2">
-            <li className="text-gray-300 hover:text-white transition-all">🔹 What is Focus</li>
-            <li className="text-gray-300 hover:text-white transition-all">🔹 Why Focus is Important</li>
-            <li className="text-gray-300 hover:text-white transition-all">🔹 Things That Distract Us from Focusing</li>
-            <li className="text-gray-300 hover:text-white transition-all">🔹 How to Focus Properly</li>
-            </ul>
-        </div>
-    </section>
-
-    <Focus/>
-    <Notes/>
-    <ThingsThatDistractUs/>
-    <HowToFocusProperly/>
-
+    <>
+   
+   
+        <Recap/>
+        <Focus/>
+        <Notes/>
+        <ThingsThatDistractUs/>
+        <HowToFocusProperly/>
+   
     </>
 
    
@@ -42,10 +28,32 @@ function Intro(){
 
 export default Learning;
 
+function Recap(){
+  return(
+  <section className="bg-gray-900 text-white p-6 rounded-lg shadow-lg  flex flex-col  ">
+  <h1 className=" text-3xl font-bold text-amber-400 mb-4">Quick Review</h1>
+  <p className="text-gray-300 text-lg mb-6">
+      Learn the fundamentals of focus and how to master deep concentration.
+  </p>
+
+  <div className="bg-gray-800 p-5 rounded-lg shadow-md border-l-4 border-amber-500">
+      <h3 className="text-xl font-semibold mb-3 text-amber-300">You will learn about:</h3>
+      <ul className="list-disc list-inside space-y-2">
+      <li className="text-gray-300 hover:text-white transition-all">🔹 What is Focus</li>
+      <li className="text-gray-300 hover:text-white transition-all">🔹 Why Focus is Important</li>
+      <li className="text-gray-300 hover:text-white transition-all">🔹 Things That Distract Us from Focusing</li>
+      <li className="text-gray-300 hover:text-white transition-all">🔹 How to Focus Properly</li>
+      </ul>
+  </div>
+</section>
+  );
+
+}
+
 function Focus(){
     return(
 
-        <section className="bg-gray-900 text-white font-sans p-8 rounded-lg shadow-md max-w-4xl mx-auto space-y-6">
+        <section className="flex flex-col bg-gray-900 text-white font-sans p-8 rounded-lg shadow-md max-w-4xl mx-auto space-y-6">
   <h2 className="text-3xl font-bold border-b border-gray-700 pb-2">
     What is Focus
   </h2>
@@ -76,7 +84,7 @@ function YouTubeEmbed() {
   
   function Notes() {
     return (
-      <section className="bg-gray-900 text-white font-sans p-8 rounded-lg shadow-md max-w-lg mx-auto space-y-6">
+      <section className="flex flex-col bg-gray-900 text-white font-sans p-8 rounded-lg shadow-md max-w-lg mx-auto space-y-6">
         <h2 className="text-2xl font-bold border-b border-gray-700 pb-2">
           Why is Focus Important? 🤔🎯
         </h2>
@@ -107,7 +115,7 @@ function YouTubeEmbed() {
 
   function ThingsThatDistractUs() {
     return (
-      <section className="bg-gray-900 text-white font-sans p-8 rounded-lg shadow-md max-w-4xl mx-auto space-y-8">
+      <section className="flex flex-col bg-gray-900 text-white font-sans p-8 rounded-lg shadow-md max-w-4xl mx-auto space-y-8">
         <h2 className="text-3xl font-bold mb-6 border-b border-gray-700 pb-2">
           Things That Distract Us from Focusing 🤔
         </h2>
@@ -174,7 +182,7 @@ function YouTubeEmbed() {
   
   function HowToFocusProperly() {
     return (
-      <section className="bg-gray-900 text-white font-sans p-8 rounded-lg shadow-md max-w-4xl mx-auto space-y-8">
+      <section className="flex flex-col bg-gray-900 text-white font-sans p-8 rounded-lg shadow-md max-w-4xl mx-auto space-y-8">
         <h2 className="text-3xl font-bold border-b border-gray-700 pb-2">
           How to Focus Properly
         </h2>
