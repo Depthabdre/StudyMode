@@ -1,10 +1,13 @@
-
+import { Link } from "react-router-dom";
 
 function Learning() {
   return (
+    <>
+    <FloatingButtonFocus/>  
     <main className="flex flex-col justify-center items-center bg-gray-900 text-white p-6 rounded-lg shadow-lg border border-gray-700  ">
         <Intro/>
     </main>
+    </>
   );
 }
 
@@ -12,7 +15,7 @@ function Intro(){
     return (
     <>
    
-   
+        
         <Recap/>
         <Focus/>
         <Notes/>
@@ -259,7 +262,15 @@ function YouTubeEmbed() {
     );
   }
   
-  
+  function FloatingButtonFocus() {
+    return (
+      <div className="fixed right-4 top-4 bg-amber-900 text-white px-4 py-2 rounded-md shadow-lg hover:bg-amber-700 transition-all">
+        <Link to="/" className="text-white text-sm font-semibold">
+          Focus Session
+        </Link>
+      </div>
+    );
+  }
  
   
   
