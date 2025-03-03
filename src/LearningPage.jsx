@@ -31,7 +31,7 @@ export default Learning;
 function Recap(){
   return(
   <section className="bg-gray-900 text-white p-6 rounded-lg shadow-lg  flex flex-col  ">
-  <h1 className=" text-3xl font-bold text-amber-400 mb-4">Quick Review</h1>
+  <h1 className=" text-3xl font-bold text-amber-400">Quick Review</h1>
   <p className="text-gray-300 text-lg mb-6">
       Learn the fundamentals of focus and how to master deep concentration.
   </p>
@@ -105,9 +105,7 @@ function YouTubeEmbed() {
             <span className="text-orange-400">🌟 Living a Better Life:</span> Focusing on the present moment leads to greater joy.
           </li>
         </ul>
-        <p className="text-orange-300">
-          In short, focus is the key to success, happiness, and deep connections in life! 🚀🔥
-        </p>
+       
       </section>
     );
   }
@@ -127,7 +125,7 @@ function YouTubeEmbed() {
   
         {/* External Factors */}
         <div className="border border-gray-700 rounded-lg p-6 shadow-sm">
-          <h3 className="text-2xl font-semibold mb-4 text-white">
+          <h3 className="text-2xl font-semibold text-white">
             1. External Distractions 📱
           </h3>
           <p className="mb-4 text-gray-300">
@@ -147,7 +145,7 @@ function YouTubeEmbed() {
   
         {/* Internal Factors */}
         <div className="border border-gray-700 rounded-lg p-6 shadow-sm">
-          <h3 className="text-2xl font-semibold mb-4 text-white">
+          <h3 className="text-2xl font-semibold text-white">
             2. Internal Distractions 😔
           </h3>
           <p className="mb-4 text-gray-300">
@@ -165,8 +163,8 @@ function YouTubeEmbed() {
   
         {/* How to Control Distractions */}
         <div className="bg-gray-800 border border-gray-700 rounded-lg p-6 shadow-sm">
-          <h3 className="text-2xl font-semibold mb-4 text-white">
-            How to Control These Distractions? 🚀
+          <h3 className="text-2xl font-semibold text-white">
+            How to Control These Distractions? 
           </h3>
           <p className="mb-4 text-gray-300">
             Distractions are part of life, but the good news is that you can learn to control them! In the <strong className="text-white">Learning Session</strong>, you’ll be guided through step-by-step strategies to improve your focus.
@@ -183,34 +181,81 @@ function YouTubeEmbed() {
   function HowToFocusProperly() {
     return (
       <section className="flex flex-col bg-gray-900 text-white font-sans p-8 rounded-lg shadow-md max-w-4xl mx-auto space-y-8">
-        <h2 className="text-3xl font-bold border-b border-gray-700 pb-2">
-          How to Focus Properly
-        </h2>
-        <div className="space-y-6">
-          {/* External Distractions */}
-          <div>
-            <h3 className="text-2xl font-semibold">
-              Minimizing External Distractions
-            </h3>
-            <p className="text-gray-300">
-              To focus effectively, it is important to reduce the time spent on highly stimulating activities. Watching series, browsing TikTok, YouTube, and other social media can significantly disrupt your concentration. First, identify your core values. Then determine if these activities align with those values. If they do not, consider removing or limiting these distractions. Avoid deceiving yourself into thinking you can simply control your impulses. Instead, use an avoidance strategy to maintain your focus.
-            </p>
-          </div>
-  
-          {/* Internal Distractions */}
-          <div>
-            <h3 className="text-2xl font-semibold">
-              Managing Internal Distractions: Acceptance and Enjoyment
-            </h3>
-            <p className="text-gray-300">
-              <strong>Acceptance:</strong> At times, you might not enjoy every task. However, accepting that a particular activity is necessary can make a big difference. Acceptance means acknowledging the present moment and engaging with it willingly. This mindset brings a subtle inner peace that energizes your actions. It is an active, creative process that helps you take responsibility for your state of consciousness.
-            </p>
-            <p className="text-gray-300">
-              <strong>Enjoyment:</strong> True focus also comes from finding joy in what you do. Rather than waiting for the ideal moment, learn to appreciate the task at hand. Enjoyment is not solely derived from the activity itself; it flows from an inner state of fulfillment. By centering your attention on the present, you boost your ability to enjoy your work, thereby enhancing both your productivity and overall quality of life. Do not seek external validation for joy, as this often leads to frustration. Embrace the present and let enjoyment be the driving force behind your actions.
-            </p>
-          </div>
-        </div>
-      </section>
+  <h2 className="text-4xl font-bold border-b border-gray-700 pb-4">
+    How to Focus Properly
+  </h2>
+  <div className="space-y-8">
+    {/* External Distractions */}
+    <div>
+      <h3 className="text-3xl font-semibold">
+        Minimizing External Distractions
+      </h3>
+      <p className="text-lg leading-relaxed">
+        To focus effectively, it is important to reduce the time spent on highly stimulating activities.
+      </p>
+      <p className="text-lg leading-relaxed">
+        Watching series, browsing TikTok, YouTube, and other social media can significantly disrupt your concentration.
+      </p>
+      <p className="text-lg leading-relaxed">
+        First, identify your core values.
+      </p>
+      <p className="text-lg leading-relaxed">
+        Then determine if these activities align with those values.
+      </p>
+      <p className="text-lg leading-relaxed">
+        If they do not, consider removing or limiting these distractions.
+      </p>
+      <p className="text-lg leading-relaxed">
+        Avoid deceiving yourself into thinking you can simply control your impulses.
+      </p>
+      <p className="text-lg leading-relaxed">
+        Instead, use an avoidance strategy to maintain your focus.
+      </p>
+    </div>
+
+    {/* Internal Distractions */}
+    <div className="text-justify">
+      <h3 className="text-3xl font-semibold mb-4 text-start">
+        Managing Internal Distractions: Acceptance and Enjoyment
+      </h3>
+      <p className="text-lg leading-relaxed mb-4">  
+    <strong className="text-xl">Acceptance:</strong> The moment you fully accept what you're doing, enjoyment naturally follows, and the action becomes an end in itself. When you embrace every task, your energy becomes powerful and magnetic, drawing in positivity and making your work more impactful. Let acceptance be your daily habit—it transforms every action into a source of strength and attraction.  
+</p>
+
+      <p className="text-lg leading-relaxed">
+        Acceptance means acknowledging the present moment and engaging with it willingly.
+      </p>
+      <p className="text-lg leading-relaxed">
+        This mindset brings a subtle inner peace that energizes your actions.
+      </p>
+      <p className="text-lg leading-relaxed mb-6">
+        It is an active, creative process that helps you take responsibility for your state of consciousness.
+      </p>
+      <p className="text-lg leading-relaxed">
+        <strong className="text-xl">Enjoyment:</strong> True focus also comes from finding joy in what you do.
+      </p>
+      <p className="text-lg leading-relaxed">
+        Rather than waiting for the ideal moment, learn to appreciate the task at hand.
+      </p>
+      <p className="text-lg leading-relaxed">
+        Enjoyment is not solely derived from the activity itself; it flows from an inner state of fulfillment.
+      </p>
+      <p className="text-lg leading-relaxed">
+        By centering your attention on the present, you boost your ability to enjoy your work.
+      </p>
+      <p className="text-lg leading-relaxed">
+        This enhances both your productivity and overall quality of life.
+      </p>
+      <p className="text-lg leading-relaxed">
+        Do not seek external validation for joy, as this often leads to frustration.
+      </p>
+      <p className="text-lg leading-relaxed">
+        Embrace the present and let enjoyment be the driving force behind your actions.
+      </p>
+    </div>
+  </div>
+</section>
+
     );
   }
   

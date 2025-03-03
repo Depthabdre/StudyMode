@@ -173,7 +173,7 @@ export default function App() {
             element={
               <>
                <FloatingButton />
-              <main className="grid grid-rows-[auto_300px_auto] md:grid-rows-[auto_auto_auto] md:grid-cols-2 gap-4 w-[90vw] min-h-screen items-start justify-center p-0">
+              <main className="grid grid-rows-[auto_300px_auto]   md:grid-rows-[auto_auto_auto] md:grid-cols-2 gap-4 w-[90vw] min-h-screen  justify-items-center p-0">
                 <Mode isPause={isPause} mode={mode} setMode={setMode} />
                 {isRun ? (
                   <TimeStarter
