@@ -198,6 +198,7 @@ export default function App() {
                 <Quotes quotes={quotes} setQuotes={setQuotes} isRun={isRun} />
                
               </main>
+              <ProgressTracker/>
               <Notification isVisible={isVisible} isBreak={isBreak} onClose={onClose} />
               </>
               
@@ -701,7 +702,7 @@ return (
 </div>
 
 <div>
-  <p className="text-emerald-50 font-semibold "> You'll have {breaks} breaks </p>
+  <p className="text-emerald-50 font-semibold ">You will have {breaks} breaks </p>
 </div>
 
 <div className="bg-blue-700 rounded-md p-2 text-blue-50 font-bold hover:scale-110 transition-transform duration-500 ease-linear">
@@ -758,6 +759,76 @@ function FloatingButton() {
   );
 }
 
+
+
+function ProgressTracker() {
+
+  return(
+
+<>
+<section className="w-3/4 m-auto md:w-1/2 flex flex-col   text-lg text-white font-bold shadow-md  bg-gray-800  mt-4 md:m-auto rounded-md overflow-x-scroll">
+  <h1 className="m-auto text-2xl font-bold text-fuchsia-400">Progress Tracker</h1>
+<section className=" flex gap-4 overflow-x-scroll p-2 ">
+
+  <MonthTable daymonth={[1, 31]} month="January" />
+  <MonthTable daymonth={[2, 29]} month="February" />
+  <MonthTable daymonth={[3, 31]} month="March" />
+  <MonthTable daymonth={[4, 30]} month="April" />
+  <MonthTable daymonth={[5, 31]} month="May" />
+  <MonthTable daymonth={[6, 30]} month="June" />
+  <MonthTable daymonth={[7, 31]} month="July" />
+  <MonthTable daymonth={[8, 31]} month="August" />
+  <MonthTable daymonth={[9, 30]} month="September" />
+  <MonthTable daymonth={[10, 31]} month="October" />
+  <MonthTable daymonth={[11, 30]} month="November" />
+  <MonthTable daymonth={[12, 31]} month="December" />
+
+</section>
+</section>
+</>
+
+  );
+  
+}
+
+function MonthTable({ daymonth , month }) {
+  
+  function clickHandler(e) {
+    if (e.target.innerText == "")
+    e.target.innerText = "X";
+    else
+    e.target.innerText = "";
+  }
+  
+  function buttonrender() {
+    let result = [];
+    for (let i = 0; i < daymonth[1]; i++) {
+      result.push(
+        <button
+          key={`${daymonth[0]}-${i+1}`}
+          className="w-4 h-4 bg-gray-900 rounded-sm hover:scale-125 relative text-sm text-red-600 font-extrabold"
+          onClick={clickHandler}
+
+          
+         
+
+
+        ></button>
+      );
+    }
+    return result;
+  }
+
+  return (
+<section>
+  <h1 className="text-center">{month}</h1>
+  <div className="grid grid-flow-col grid-rows-7 gap-1.5">
+    {buttonrender()}
+  </div>
+</section>
+
+  );
+}
 
 
 
