@@ -172,8 +172,8 @@ export default function App() {
             path="/"
             element={
               <>
-               <FloatingButton />
-              <main className="grid grid-rows-[auto_300px_auto]   md:grid-rows-[auto_auto_auto] md:grid-cols-2 gap-4 w-[90vw] min-h-screen  justify-items-center p-0">
+               {!isRun ? <FloatingButton /> : '' }
+              <main className="p-4 grid grid-rows-[auto_300px_auto]   md:grid-rows-[auto_auto_auto] md:grid-cols-2 gap-4  min-h-screen place-items-center justify-items-center">
                 <Mode isPause={isPause} mode={mode} setMode={setMode} />
                 {isRun ? (
                   <TimeStarter
@@ -352,7 +352,7 @@ function TimeStarter({ totalSeconds , minutes , pauseHandler , isPause , clickHa
   const seconds = 60 -  totalSeconds % 60;
 
   return (
-    <section className='flex flex-col justify-center place-items-center shadow-lg bg-gray-800 text-white p-2 rounded-lg h-full '>
+    <section className='flex flex-col justify-center place-items-center shadow-lg bg-gray-800 text-white p-2 rounded-lg h-full w-full '>
         {isPause ? (
    <p className="self-start   text-lg font-semibold px-4 py-2 rounded-lg ">
       Break {sessionBreakPoint.current[1]} of {Math.ceil(TotalSessionMinute.current / 35)}
@@ -751,7 +751,7 @@ function Notification({ isBreak, onClose ,isVisible }) {
 
 function FloatingButton() {
   return (
-    <div className="fixed right-4 top-4 bg-amber-900 text-white px-4 py-2 rounded-md shadow-lg hover:bg-amber-700 transition-all">
+    <div className="absolute right-4 top-4 bg-amber-900 text-white px-4 py-2 rounded-md shadow-lg hover:bg-amber-700 transition-all">
       <Link to="/LearningPage" className="text-white text-sm font-semibold">
         Learn How to Focus
       </Link>
@@ -766,7 +766,7 @@ function ProgressTracker() {
   return(
 
 <>
-<section className="w-3/4 m-auto md:w-1/2 flex flex-col   text-lg text-white font-bold shadow-md  bg-gray-800  mt-4 md:m-auto rounded-md overflow-x-scroll">
+<section className="w-3/4 m-auto md:w-1/2 flex flex-col   text-lg text-white font-bold shadow-md  bg-gray-800  mt-4 md:m-auto rounded-md overflow-x-scroll p-4">
   <h1 className="m-auto text-2xl font-bold text-fuchsia-400">Progress Tracker</h1>
 <section className=" flex gap-4 overflow-x-scroll p-2 ">
 
