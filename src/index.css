@@ -4,9 +4,9 @@
 
 
 body, html {
-    /* margin-left: 2.5%; */
-    padding: 0;
-    background-color: rgb(41, 37, 37);
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+    background-color: #20232a;
   }
 
   
