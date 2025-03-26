@@ -15,17 +15,16 @@ function Quotes({ quotes, setQuotes, isRun }) {
   }, [quotes]);
   
   useEffect(() => {
-  
     setDisplayedQuote('');
     let index = 0;
     const interval = setInterval(() => {
-      if (index < currentQuote.length - 1) {
+      if (index < currentQuote.length) {
         setDisplayedQuote((prev) => prev + currentQuote[index]);
         index++;
       } else {
         clearInterval(interval);
       }
-    }, 50); // 50ms
+    }, 50); 
   
     return () => clearInterval(interval);
   }, [currentQuote]);

@@ -2,7 +2,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Learning from "./LearningPage";
 import { useState, useEffect, useRef,useCallback } from "react";
-import { Quotes, Mode, TimeStarter, Notification, ProgressTracker, FloatingButton , FocusSession } from "./Components";
+import { Quotes, Mode, TimeStarter, Notification, ProgressTracker , FocusSession } from "./Components";
 import prequotes from "./Quote";
 
 

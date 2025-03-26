@@ -24,32 +24,31 @@ function TimeStarter({ totalSeconds , minutes , pauseHandler , isPause , clickHa
   const seconds = 60 -  totalSeconds % 60;
 
   return (
-    <section className='flex flex-col justify-center place-items-center shadow-lg bg-gray-800 text-white p-2 rounded-lg h-[60vh] w-full '>
+    <section className='relative flex flex-col justify-center place-items-center shadow-lg bg-gray-800 text-white p-2 rounded-lg h-[60vh] w-full'>
         {isPause ? (
-   <p className="self-start   text-lg font-semibold px-4 py-2 rounded-lg ">
-      Break {sessionBreakPoint.current[1]} of {Math.ceil(TotalSessionMinute.current / 35)}
-    </p>
-  ) : (
-    <p className="self-start text-lg font-semibold px-4 py-2 rounded-lg ">
-      Joy Session {sessionBreakPoint.current[0]} of {Math.ceil(TotalSessionMinute.current / 35)}
-    </p>
-  )}
+          <p className="absolute top-0 left-0 text-lg font-semibold px-4 py-2 rounded-lg">
+            Break {sessionBreakPoint.current[1]} of {Math.ceil(TotalSessionMinute.current / 35)}
+          </p>
+        ) : (
+          <p className="absolute top-0 left-0 text-lg font-semibold px-4 py-2 rounded-lg">
+            Joy Session {sessionBreakPoint.current[0]} of {Math.ceil(TotalSessionMinute.current / 35)}
+          </p>
+        )}
      
         <CircularTicker activeColors={activeColors}>
-          <p className="text-xl md:text-4xl font-extrabold font-mono tracking-wide ">
+          <p className="text-xl md:text-4xl font-extrabold font-mono tracking-wide">
             {minutes - 1}:{String(seconds).padStart(2, '0')}
           </p>
         </CircularTicker>
      
-
-      <div className="flex justify-center gap-4 items-center pt-5 row-span-2">
-        { !isPause ? (
-          <Pause onClick={pauseHandler} size={30} className="cursor-pointer hover:scale-110 transition-transform" />
-        ) : (
-          <Play onClick={pauseHandler} size={30} className="cursor-pointer hover:scale-110 transition-transform" />
-        )}
-        <button onClick={clickHandler} className="text-blue-200 font-bold border-2 rounded-lg w-14 bg-gray-700 hover:scale-105 hover:bg-gray-800 transition">Stop</button>
-      </div>
+        <div className="flex justify-center gap-4 items-center pt-5 row-span-2">
+          { !isPause ? (
+            <Pause onClick={pauseHandler} size={30} className="cursor-pointer hover:scale-110 transition-transform" />
+          ) : (
+            <Play onClick={pauseHandler} size={30} className="cursor-pointer hover:scale-110 transition-transform" />
+          )}
+          <button onClick={clickHandler} className="text-blue-200 font-bold border-2 rounded-lg w-14 bg-gray-700 hover:scale-105 hover:bg-gray-800 transition">Stop</button>
+        </div>
     </section>
   );
 }
