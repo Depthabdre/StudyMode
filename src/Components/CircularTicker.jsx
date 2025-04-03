@@ -20,16 +20,21 @@ function CircularTicker({ children, activeColors }) {
   const percentWidth = 0.75 * (parentWidth / 2);
 
   return (
-    <div ref={parentRef} className="relative aspect-square flex flex-col justify-center items-center shadow-md bg-gray-700 rounded-full h-3/4 md:h-3/5 lg:h-3/4">
+    <div
+      ref={parentRef}
+      className="relative aspect-square flex flex-col justify-center items-center shadow-md bg-gray-700 dark:bg-gray-900 rounded-full h-3/4 md:h-3/5 lg:h-3/4"
+    >
       {Array.from({ length: 24 }).map((_, i) => (
         <div
           key={i}
-          className={`absolute ${activeColors[i] ? "bg-blue-500" : "bg-gray-500"} w-4 h-1 rounded-full`}
+          className={`absolute ${
+            activeColors[i] ? "bg-blue-500 dark:bg-blue-300" : "bg-gray-500 dark:bg-gray-700"
+          } w-4 h-1 rounded-full`}
           style={{
             top: "50%",
             left: "50%",
             transformOrigin: "left center",
-            transform: `rotate(${i * 15}deg) translateX(${percentWidth}px)`
+            transform: `rotate(${i * 15}deg) translateX(${percentWidth}px)`,
           }}
         ></div>
       ))}
@@ -37,6 +42,7 @@ function CircularTicker({ children, activeColors }) {
     </div>
   );
 }
+
 CircularTicker.propTypes = {
   children: PropTypes.node,
   activeColors: PropTypes.arrayOf(PropTypes.bool).isRequired,

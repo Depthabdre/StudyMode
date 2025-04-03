@@ -2,7 +2,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Learning from "./LearningPage";
 import { useState, useEffect, useRef,useCallback } from "react";
-import { Quotes, Mode, TimeStarter, Notification, ProgressTracker , FocusSession } from "./Components";
+import { Quotes, ThemeToggle, Mode, TimeStarter, Notification, ProgressTracker , FocusSession } from "./Components";
 import prequotes from "./Quote";
 
 
@@ -172,9 +172,10 @@ export default function App() {
             element={
               <>
                {/* {!isRun ? <FloatingButton /> : '' } */}
+               <ThemeToggle />
               
                 <Mode isPause={isPause} mode={mode} setMode={setMode} />
-                <section className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center justify-center w-full h-full md:p-10">
+                <section className=" grid grid-cols-1 md:grid-cols-2 gap-4 items-center justify-center w-full h-full md:p-10">
                 {isRun ? (
                   <TimeStarter
                     isPause={isPause}

@@ -7,3 +7,4 @@ export { default as ProgressTracker } from "./ProgressTracker";
 export { default as FloatingButton } from "./FloatingButton";
 export { default as FocusSession } from "./FocusSession";
 export { default as MonthTable } from "./MonthTable";
+export {default as ThemeToggle} from "./ThemeToggle";
