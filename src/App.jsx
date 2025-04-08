@@ -22,7 +22,6 @@ export default function App() {
   let minutes = useRef(0);
 
   useEffect(() => {
-    if (!isRun) return;
 
     if (isRun && !isPause) {
       intervalId.current = setInterval(() => {
@@ -46,8 +45,8 @@ export default function App() {
   }, []);
   
 
-  useEffect(() => {
-    if (!isRun) return;
+ useEffect(()=>{
+    // if (!isRun) return;
   
     if (TotalSessionMinute.current >= 30 && !isBreak) {
       minutes.current = 30 - Math.floor(totalSeconds / 60);
@@ -149,7 +148,7 @@ export default function App() {
         setIsRun(false);
       }
     }
-  }, [totalSeconds, isRun, isBreak, isVisible, onClose]);
+  } ,  [totalSeconds, isRun, isBreak, isVisible, onClose] );
   
 
   function clickHandler() {
