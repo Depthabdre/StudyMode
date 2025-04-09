@@ -21,12 +21,15 @@ export default function App() {
   const [isVisible, setIsVisible] = useState(false);
   let minutes = useRef(0);
 
+  
+
   useEffect(() => {
 
     if (isRun && !isPause) {
       intervalId.current = setInterval(() => {
         setTotalSeconds(prevSeconds => prevSeconds + 1);
       }, 1000);
+      
     } else {
       clearInterval(intervalId.current);
      
@@ -194,6 +197,7 @@ export default function App() {
                     TotalSessionMinute={TotalSessionMinute}
                     setIsRun={setIsRun}
                     mode={mode}
+                    minutes={minutes}
                     
                   />
                 )}

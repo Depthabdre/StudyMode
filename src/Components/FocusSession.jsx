@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { ArrowUp, ArrowDown, Play } from "lucide-react";
 
-function FocusSession({ TotalSessionMinute, setIsRun, mode, currentSessionMinute }) {
+function FocusSession({ TotalSessionMinute, setIsRun, mode, currentSessionMinute, minutes }) {
   const [totalMinutes, setTotalMinutes] = useState(0);
   const breaks = Math.floor(totalMinutes / 35);
 
@@ -13,8 +13,10 @@ function FocusSession({ TotalSessionMinute, setIsRun, mode, currentSessionMinute
       TotalSessionMinute.current = totalMinutes;
       if (TotalSessionMinute.current >= 30) {
         currentSessionMinute.current = 30;
+        minutes.current = 30;
       } else {
         currentSessionMinute.current = TotalSessionMinute.current;
+        minutes.current = TotalSessionMinute.current;
       }
       setIsRun(true);
     }
